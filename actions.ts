@@ -1,29 +1,19 @@
 "use server";
-// const VERCEL_ENV = process.env.VERCEL_ENV;
 
-export const BASE_URL = "https://momentum.redberryinternship.ge/api";
+import axios from "axios";
 
-// export async function getAllPriorities() {
-//   try {
-//     const response = await fetch(`${BASE_URL}/priorities`, {
-//       cache: "no-cache",
-//     });
+const customFetch = axios.create({
+  baseURL: "https://momentum.redberryinternship.ge/api",
+});
 
-//     if (!response.ok) {
-//       throw new Error(`HTTP error! status: ${response.status}`);
-//     }
+customFetch.interceptors.request.use(
+  (config) => {
+    config.headers["authorization"] = `Bearer ${process.env.TOKEN}`;
+    return config;
+  },
+  (error) => {
+    return Promise.reject(error);
+  }
+);
 
-//     const data = await response.json();
-//     return data.users;
-//   } catch (error) {
-//     console.error("Error fetching users:", error);
-//     return null; // or handle the error as needed
-//   }
-// }
-
-// export async function getAllPriorities() {
-//   const data = await fetch(`${BASE_URL}/priorities`);
-//   const response = data.json();
-//   console.log(response);
-//   return response;
-// }
+export default customFetch;

@@ -8,10 +8,10 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --color-beginning: var(#f7bc30);
-  --color-progress: var(#f7bc30);
-  --color-ready: var(#f7bc30);
-  --color-done: var(#f7bc30);
+  --color-beginning: #f7bc30;
+  --color-progress: #fb5607;
+  --color-ready: #ff006e;
+  --color-done: #3a86ff;
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }

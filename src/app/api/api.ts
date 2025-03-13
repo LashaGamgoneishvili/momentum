@@ -1,3 +1,5 @@
+import customFetch from "../../../actions";
+
 export const BASE_URL = "https://momentum.redberryinternship.ge/api";
 
 export async function getAllStatuses() {
@@ -58,7 +60,17 @@ export async function getAllDepartment() {
 
 export async function getAllTasks() {
   try {
-    const response = await fetch(`${BASE_URL}/tasks`, {
+    const response = await customFetch.get("/tasks");
+
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching users:", error);
+    return [];
+  }
+}
+export async function getTask(id: string) {
+  try {
+    const response = await fetch(`${BASE_URL}/tasks/${id}`, {
       cache: "no-cache",
       headers: { Authorization: "Bearer 9e6a193a-c4d1-4758-ae39-76d3720b9491" },
     });
@@ -75,25 +87,26 @@ export async function getAllTasks() {
   }
 }
 
-// export async function getAllEmployees() {
-//   try {
-//     // revalidatePath(`/admin`);
-//     const response = await fetch(`${BASE_URL}/employees`, {
-//       cache: "no-cache",
-//     });
+export async function getAllEmployees() {
+  try {
+    // revalidatePath(`/admin`);
+    const response = await fetch(`${BASE_URL}/employees`, {
+      cache: "no-cache",
+      headers: { Authorization: "Bearer 9e6a193a-c4d1-4758-ae39-76d3720b9491" },
+    });
 
-//     if (!response.ok) {
-//       throw new Error(`HTTP error! status: ${response.status}`);
-//     }
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
 
-//     const data = await response.json();
-//     // console.log("data------", data);
-//     return data;
-//   } catch (error) {
-//     console.error("Error fetching users:", error);
-//     return [];
-//   }
-// }
+    const data = await response.json();
+    // console.log("data------", data);
+    return data;
+  } catch (error) {
+    console.error("Error fetching users:", error);
+    return [];
+  }
+}
 
 // export async function getAllPriorities() {
 //   const data = await fetch(`${BASE_URL}/priorities`);
@@ -107,11 +120,3 @@ export async function getAllTasks() {
 //   console.log("response---", response);
 //   return response;
 // }
-
-export async function getAllEmployees() {
-  const response = await fetch(`${BASE_URL}/employees`);
-  const data = response.json();
-
-  console.log("----data----", data);
-  return ["1", "2"];
-}
