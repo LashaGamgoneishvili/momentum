@@ -1,7 +1,8 @@
-import { getTask } from "../../api/api";
 import { MainProps } from "../../../../typings";
 import Image from "next/image";
 import TaskDetails from "../../components/TaskDetails";
+import Comment from "@/comment";
+import { getTask } from "../../../../actions";
 
 async function DetailsPage({ params: { id } }: MainProps) {
   const task = await getTask(id);
@@ -13,22 +14,16 @@ async function DetailsPage({ params: { id } }: MainProps) {
         <div className="flex flex-col gap-[63px] ">
           <div className="flex gap-3 mb-4">
             <div
-              className="flex gap-1 p-1 px-[5px] rounded-[5px]"
-              style={{
-                color:
-                  task.priority === "მაღალი"
-                    ? "#FA4D4D"
-                    : task.priority === "საშუალო"
-                    ? "#FFBE0B"
-                    : "#08A508",
-                border: `1px solid ${
-                  task.priority === "მაღალი"
-                    ? "#FA4D4D"
-                    : task.priority === "საშუალო"
-                    ? "#FFBE0B"
-                    : "#08A508"
-                }`,
-              }}
+              className={`flex gap-1 py-1 px-[5px] border-[1px] rounded-[3px]  ${
+                task.priority.id === 3 && "border-heigh"
+              } ${task.priority.id === 2 && "border-medium"} ${
+                task.priority.id === 1 && "border-low"
+              } 
+              ${task.priority.id === 3 && "border-heigh"}
+              ${task.priority.id === 2 && "border-medium"}
+              ${task.priority.id === 1 && "border-low"}  
+
+              `}
             >
               <Image
                 src={task.priority.icon}
@@ -37,15 +32,10 @@ async function DetailsPage({ params: { id } }: MainProps) {
                 height={15}
               />
               <span
-                style={{
-                  color:
-                    task.priority === "მაღალი"
-                      ? "#FA4D4D"
-                      : task.priority === "საშუალო"
-                      ? "#FFBE0B"
-                      : "#08A508",
-                }}
-                className="  text-[12px] font-semibold"
+                className={`text-[12px] font-semibold ${
+                  task.priority.id === 3 && "text-heigh"
+                } ${task.priority.id === 2 && "text-medium"}
+                ${task.priority.id === 1 && "text-low"}`}
               >
                 {task.priority.name}
               </span>
@@ -58,13 +48,10 @@ async function DetailsPage({ params: { id } }: MainProps) {
             </button>
           </div>
 
-          {/* Title */}
-          <h1 className="text-2xl font-bold text-gray-900">
-            Redberry-ს საიტის ლენდინგის დიზაინი
-          </h1>
+          <h1 className="text-2xl font-bold text-gray-900">{task.name}</h1>
 
-          {/* Description */}
           <p className="text-gray-700 mt-3 text-lg w-[715px]">
+            {/* {task.description} */}
             მიზანია რომ შევქმნათ თანამედროვე, სუფთა და ფუნქციონალური დიზაინი,
             რომელიც უნიკალურობის განცდას მოგცემს და მაქსიმალურ ინფორმაციის
             გადმოსცემს. დიზაინი უნდა იყოს ადაპტირებადი (responsive), გამორჩეული
@@ -74,15 +61,7 @@ async function DetailsPage({ params: { id } }: MainProps) {
           <TaskDetails task={task} />
         </div>
 
-        <div className="flex flex-col text-black">
-          <h1>asfca</h1>
-          <p>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Eum, et
-            debitis. Sint quam, alias animi reprehenderit incidunt est
-            obcaecati. Temporibus recusandae accusamus praesentium delectus
-            doloremque ipsam consequatur dignissimos impedit excepturi!
-          </p>
-        </div>
+        <Comment task={task} />
       </div>
     </div>
   );

@@ -1,16 +1,16 @@
 import Image from "next/image";
-import { Categories } from "../../../typings";
+import { FlatTask } from "../../../typings";
 import commentIcon from "../../../public/Comments.svg";
 import Link from "next/link";
 
-const Card = ({ task }: { task: Categories }) => {
+const Card = ({ task }: { task: FlatTask }) => {
   const dateStr = task.date;
   const date = new Date(dateStr);
 
   const formattedDate = `${date.getDate()} ${date.toLocaleString("ka-Ge", {
     month: "short",
   })}, ${date.getFullYear()}`;
-
+  console.log("Task-Task-14", task);
   return (
     <>
       <Link
@@ -20,24 +20,11 @@ const Card = ({ task }: { task: Categories }) => {
         <div className="flex justify-between items-center mb-[28px]">
           <div className="flex gap-2">
             <div
-              className="flex gap-1 p-1 px-[5px] rounded-[5px]"
-              style={{
-                color:
-                  task.priority === "მაღალი"
-                    ? "#FA4D4D"
-                    : task.priority === "საშუალო"
-                    ? "#FFBE0B"
-                    : "#08A508",
-                border: `1px solid ${
-                  task.priority === "მაღალი"
-                    ? "#FA4D4D"
-                    : task.priority === "საშუალო"
-                    ? "#FFBE0B"
-                    : "#08A508"
-                }`,
-                // padding: "8px", // Optional: Add padding for better UI
-                // borderRadius: "5px", // Optional: Rounded corners
-              }}
+              className={`flex w-[86px] gap-1 p-1 border-[1px] px-[5px] rounded-[5px] ${
+                task.priority_id === 3 && "border-heigh"
+              } ${task.priority_id === 2 && "border-medium"} ${
+                task.priority_id === 1 && "border-low"
+              }`}
             >
               <Image
                 src={task.priority_icon}
@@ -46,20 +33,16 @@ const Card = ({ task }: { task: Categories }) => {
                 height={15}
               />
               <span
-                style={{
-                  color:
-                    task.priority === "მაღალი"
-                      ? "#FA4D4D"
-                      : task.priority === "საშუალო"
-                      ? "#FFBE0B"
-                      : "#08A508",
-                }}
-                className="  text-[12px] font-semibold"
+                className={`text-[12px] font-semibold ${
+                  task.priority_id === 3 && "text-heigh"
+                }
+                ${task.priority_id === 2 && "text-medium"}
+                ${task.priority_id === 1 && "text-low"}`}
               >
                 {task.priority}
               </span>
             </div>
-            <span className="bg-[#FF66A8] text-white px-3 py-1 text-[12px] rounded-[15px] font-semibold">
+            <span className="bg-[#FF66A8] text-white  px-[10px] py-1 text-[12px] rounded-[15px] font-semibold">
               {task.department
                 .split(" ")
                 .map((word) => word.slice(0, 3))
@@ -84,7 +67,9 @@ const Card = ({ task }: { task: Categories }) => {
 
           <div className="flex items-center gap-1 text-[#212529]">
             <Image src={commentIcon} alt="comment" width={22} height={22} />
-            <span className="text-sm">8</span>
+            <p>{task.employee_name}</p>
+            <p>{task.employee_id}</p>
+            <span className="text-sm">{/* {task.total_comments} */}8</span>
           </div>
         </div>
       </Link>

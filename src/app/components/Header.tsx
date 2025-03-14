@@ -5,7 +5,7 @@ import Link from "next/link";
 function Header() {
   return (
     <>
-      <header className="flex justify-between items-center h-[100px] cursor-pointer  bg-gray-100 px-[120px] w-[1920px] ">
+      <header className="flex justify-between items-center h-[100px] bg-gray-100 px-[120px] w-[1920px] ">
         <Link href={"/"} className="flex gap-1 items-center font-[31px] ">
           <h2 className="text-3xl text-[#8338EC] font-extrabold">Momentum </h2>
           <Image src={Hourglass} alt="logo" className="object-contain" />

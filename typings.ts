@@ -4,10 +4,6 @@ export type Priority = {
   icon: string;
 };
 
-export type PrioritiesProps = {
-  priorities: Priority[];
-};
-
 export type Department = {
   id: number;
   name: string;
@@ -40,7 +36,7 @@ export type Task = {
   total_comments: number;
 };
 
-export type Categories = {
+export type FlatTask = {
   id: number;
   status: string;
   status_id: number;
@@ -53,9 +49,9 @@ export type Categories = {
   title: string;
   description: string;
   employee_id: number;
-  emploee_name: string;
-  emploee_surname: string;
-  emploee_avatar: string;
+  employee_name: string;
+  employee_surname: string;
+  employee_avatar: string;
   total_comments: number;
   color: string;
 };
@@ -64,4 +60,11 @@ export type MainProps = {
   params: {
     id: string;
   };
+};
+
+export type D_E_P = "department" | "priority" | "employee";
+
+export type FilterType = {
+  id: number;
+  name: string;
 };

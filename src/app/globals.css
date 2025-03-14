@@ -12,6 +12,9 @@
   --color-progress: #fb5607;
   --color-ready: #ff006e;
   --color-done: #3a86ff;
+  --color-heigh: #fa4d4d;
+  --color-medium: #ffbe0b;
+  --color-low: #08a508;
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }

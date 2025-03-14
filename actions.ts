@@ -16,4 +16,68 @@ customFetch.interceptors.request.use(
   }
 );
 
-export default customFetch;
+export async function getAllTasks() {
+  try {
+    const response = await customFetch.get("/tasks");
+
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching users:", error);
+    return [];
+  }
+}
+
+export async function getAllStatuses() {
+  try {
+    const response = await customFetch.get("/statuses");
+
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching users:", error);
+    return [];
+  }
+}
+
+export async function getAllPriorities() {
+  try {
+    const response = await customFetch.get("/priorities");
+
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching users:", error);
+    return [];
+  }
+}
+
+export async function getAllDepartment() {
+  try {
+    const response = await customFetch.get("/departments");
+
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching users:", error);
+    return [];
+  }
+}
+
+export async function getTask(id: string) {
+  try {
+    const response = await customFetch.get(`/tasks/${id}`);
+
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching users:", error);
+    return [];
+  }
+}
+
+export async function getAllEmployees() {
+  try {
+    const response = await customFetch.get(`employees`);
+
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching users:", error);
+    return [];
+  }
+}
