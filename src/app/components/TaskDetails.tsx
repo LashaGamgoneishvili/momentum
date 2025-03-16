@@ -49,7 +49,10 @@ function TaskDetails({ task }: { task: Task }) {
               <Image src={user} width={32} height={32} alt="pieChart" />
               <div className="flex gap-2 flex-col">
                 <span className="text-sm text-[#474747]">
-                  {task.department.name}
+                  {`${task.department.name
+                    .split(" ")
+                    .map((word: string) => word.slice(0, 3))
+                    .join(". ")}.`}
                 </span>
                 <span className="text-[14px]">{task.employee.name}</span>
               </div>

@@ -41,10 +41,12 @@ async function DetailsPage({ params: { id } }: MainProps) {
               </span>
             </div>
             <button className="bg-[#FF66A8] text-white px-3 py-1 text-[12px] rounded-[15px] font-semibold">
-              {task.department.name
-                .split(" ")
-                .map((word: string) => word.slice(0, 3))
-                .join(" ")}
+              {task.department.name.split("").length < 6
+                ? task.department.name
+                : `${task.department.name
+                    .split(" ")
+                    .map((word: string) => word.slice(0, 3))
+                    .join(". ")}.`}
             </button>
           </div>
 

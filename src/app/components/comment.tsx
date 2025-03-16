@@ -65,9 +65,11 @@ export default function Comment({ task }: { task: Task }) {
                 <p className="font-bold">{comment.name}</p>
                 <p className="text-gray-600">{comment.text}</p>
 
-                <button className="mt-2 text-purple-500 hover:underline">
-                  ↳ პასუხი
-                </button>
+                <div className="flex items-start flex-col">
+                  <button className="mt-2 text-purple-500 hover:underline">
+                    ↳ პასუხი
+                  </button>
+                </div>
               </div>
             </div>
           ))}

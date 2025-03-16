@@ -25,7 +25,11 @@ function Priorities({
               checked={filters.some((filter) => filter.id === item.id)}
               id={`${item.id}-checked`}
               onChange={() =>
-                handleFilterChange("priority", { id: item.id, name: item.name })
+                handleFilterChange("priority", {
+                  id: item.id,
+                  name: item.name,
+                  key: "priority",
+                })
               }
             />
             <label htmlFor={`${item.id}-checked`} className="cursor-pointer">

@@ -35,6 +35,7 @@ export default function DropdownMenu({
   );
 
   const updateFilters = context?.updateFilters || (() => {});
+  const clearFilters = context?.clearFilters || (() => {});
   const filterTasks = context?.filterTasks || (() => {});
 
   const [allFilters, setAllFilters] = useState([
@@ -68,6 +69,19 @@ export default function DropdownMenu({
 
   function handleFilterChange(name: D_E_P, value: FilterType) {
     updateFilters(name, value);
+  }
+
+  function handleFilterRemove(value: FilterType) {
+    updateFilters(value.key, value);
+    filterTasks();
+    setShownFilters((prev) =>
+      prev.filter((filter) => filter.name !== value.name)
+    );
+  }
+
+  function handleAllFilterRemove() {
+    clearFilters();
+    setShownFilters([...allFilters]);
   }
 
   function handleFilterClick() {
@@ -128,7 +142,11 @@ export default function DropdownMenu({
       </form>
       <div className="h-[78px] relative z-1 w-full ">
         {showSelectedFilters && allFilters.length !== 0 && (
-          <SelectedFilters allFilters={shownFilters} />
+          <SelectedFilters
+            allFilters={shownFilters}
+            handleFilterRemove={handleFilterRemove}
+            handleAllFilterRemove={handleAllFilterRemove}
+          />
         )}
       </div>
     </>

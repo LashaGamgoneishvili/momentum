@@ -26,7 +26,11 @@ function Employee({
               checked={filters.some((filter) => filter.id === item.id)}
               id={`${item.id}-checked`}
               onChange={() =>
-                handleFilterChange("employee", { id: item.id, name: item.name })
+                handleFilterChange("employee", {
+                  id: item.id,
+                  name: item.name,
+                  key: "employee",
+                })
               }
             />
 

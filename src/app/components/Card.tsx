@@ -10,7 +10,7 @@ const Card = ({ task }: { task: FlatTask }) => {
   const formattedDate = `${date.getDate()} ${date.toLocaleString("ka-Ge", {
     month: "short",
   })}, ${date.getFullYear()}`;
-  console.log("Task-Task-14", task);
+
   return (
     <>
       <Link
@@ -42,11 +42,24 @@ const Card = ({ task }: { task: FlatTask }) => {
                 {task.priority}
               </span>
             </div>
-            <span className="bg-[#FF66A8] text-white  px-[10px] py-1 text-[12px] rounded-[15px] font-semibold">
-              {task.department
-                .split(" ")
-                .map((word) => word.slice(0, 3))
-                .join(" ")}
+            <span className="bg-[#FF66A8] text-white w-24 text-center  px-[10px] py-1 text-[12px] rounded-[15px] font-semibold">
+              {task.department.split(" ").length > 2
+                ? `${
+                    task.department.split("").length < 9
+                      ? task.department
+                      : task.department
+                          .split(" ")
+                          .map((word) => word.slice(0, 2))
+                          .join(". ")
+                  }.`
+                : `${
+                    task.department.split("").length < 9
+                      ? task.department
+                      : task.department
+                          .split(" ")
+                          .map((word) => word.slice(0, 3))
+                          .join(". ")
+                  }.`}
             </span>
           </div>
           <span className="text-gray-500 text-sm">{formattedDate}</span>

@@ -12,7 +12,6 @@ import reducer from "../reducers/filter_reducer";
 import {
   LOAD_PRODUCTS,
   UPDATE_FILTERS,
-  // FILTER_PRODUCTS,
   CLEAR_FILTERS,
   FILTER_PRODUCTS,
 } from "../../constant";
@@ -104,7 +103,7 @@ export const FilterProvider = ({ children }: { children: ReactNode }) => {
     </FilterContext.Provider>
   );
 };
-// make sure use
+
 export const useFilterContext = () => {
   return useContext(FilterContext);
 };

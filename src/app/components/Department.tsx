@@ -17,6 +17,8 @@ function Department({
   dep: DepartmentTypes[];
   filters: FilterType[];
 }) {
+  console.log("filters", filters);
+  console.log("dep", dep);
   return (
     <DropdownWrapper handleFilterClick={handleFilterClick}>
       {dep.map((item: DepartmentTypes) => {
@@ -32,6 +34,7 @@ function Department({
                 handleFilterChange("department", {
                   id: item.id,
                   name: item.name,
+                  key: "department",
                 })
               }
             />

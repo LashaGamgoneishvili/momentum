@@ -67,4 +67,5 @@ export type D_E_P = "department" | "priority" | "employee";
 export type FilterType = {
   id: number;
   name: string;
+  key: D_E_P;
 };

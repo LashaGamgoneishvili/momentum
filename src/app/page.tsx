@@ -75,14 +75,6 @@ export default async function TaskBoard() {
               </h2>
 
               <Tasks status={status} />
-
-              {/* {tasks.map((task) => {
-                return (
-                  <Fragment key={task.id}>
-                    {status.id === task.status_id && <Card task={task} />}
-                  </Fragment>
-                );
-              })} */}
             </div>
           ))}
         </div>
