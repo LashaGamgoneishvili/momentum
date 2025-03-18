@@ -28,7 +28,7 @@ function Employee({
               onChange={() =>
                 handleFilterChange("employee", {
                   id: item.id,
-                  name: item.name,
+                  name: `${item.name} ${item.surname}`,
                   key: "employee",
                 })
               }

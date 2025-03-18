@@ -1,6 +1,7 @@
 "use client";
 import Image from "next/image";
 import {
+  addNewTask,
   getAllDepartment,
   getAllEmployees,
   getAllPriorities,
@@ -13,7 +14,8 @@ import {
   Priority,
   Status,
 } from "../../../typings";
-import { useState, useEffect } from "react";
+import { useState, useEffect, ChangeEvent } from "react";
+import { CreateEmployee } from "@/CreateEmployee";
 
 export default function CreateNewTask() {
   const [departments, setDepartments] = useState<Departments>([]);
@@ -21,8 +23,7 @@ export default function CreateNewTask() {
   const [statuses, setStatuses] = useState<Status[]>([]);
   const [employees, setEmployees] = useState<Employee[]>([]);
 
-  const [dropdownElement, setDropdownElement] = useState(false);
-  // const [departamentDropdown, setDepartamentDropdown] = useState(false);
+  const [dropDownElement, setDropDownElement] = useState(false);
   const [priorityDropdown, setpriorityDropdown] = useState(false);
   const [statusDropdown, setStatusDropdown] = useState(false);
   const [employeeDropdown, setEmployeeDropdown] = useState(false);
@@ -34,15 +35,86 @@ export default function CreateNewTask() {
 
   const [avatar, setAvatar] = useState("");
 
-  const [priorityId, setPriorityId] = useState<number>(0);
+  const [priorityId, setPriorityId] = useState<number>();
   const [priorityIcon, setPriorityIcon] = useState("");
 
-  const [inputChecking, setInputChecking] = useState(false);
-  const [title, setTitle] = useState("");
-  // const [comment, setComment] = useState("");
+  const [inputChecking] = useState(false);
+  const [showCreateEmployee, setShowCreateEmployee] = useState(false);
 
-  console.log("title", title);
-  console.log("avatar", avatar);
+  const [task, setTask] = useState<{ [key: string]: string | number }>({
+    name: "",
+    description: "",
+    task_id: 1,
+    employee_id: 1,
+    priority_id: 1,
+  });
+
+  const handleTaskChange = (
+    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    if (e.target.name === "description" && e.target.value.length > 255) {
+      return;
+    }
+    setTask({ ...task, [e.target.name]: e.target.value });
+  };
+
+  function handlePrioritySelector(id: number, icon: string) {
+    setPriorityId(id);
+    setPriorityIcon(icon);
+  }
+
+  function handleCleanUp() {
+    setTimeout(() => {
+      setTask({
+        name: "",
+        description: "",
+        task_id: 0,
+        employee_id: 0,
+        priority_id: 0,
+      });
+      setpriorityDropdown(false);
+      setDropDownElement(false);
+      setStatusDropdown(false);
+      setEmployeeDropdown(false);
+      setPriority("");
+      setStatus("");
+      setDepartment("");
+      setEmployee("");
+      setAvatar("");
+    }, 200);
+  }
+
+  function closeAllList() {
+    if (
+      priorityDropdown ||
+      dropDownElement ||
+      statusDropdown ||
+      employeeDropdown
+    ) {
+      setpriorityDropdown(false);
+      setDropDownElement(false);
+      setStatusDropdown(false);
+      setEmployeeDropdown(false);
+    }
+  }
+
+  const clientAction = async () => {
+    const response = await addNewTask(task);
+
+    console.log("response", response);
+    // if (response) {
+    //   window.location.reload();
+    // }
+  };
+
+  useEffect(() => {
+    async function fetchDepartment() {
+      const data: Departments = await getAllDepartment();
+      setDepartments(data);
+    }
+
+    fetchDepartment();
+  }, []);
 
   useEffect(() => {
     async function fetchDepartment() {
@@ -52,8 +124,6 @@ export default function CreateNewTask() {
       const employees: Employee[] = await getAllEmployees();
 
       setDepartments(allDepartment);
-      console.log("priorities", allPriorities);
-      console.log("allDepartment", allDepartment);
       setStatuses(statuses);
       setPriorities(allPriorities);
       setEmployees(employees);
@@ -62,43 +132,34 @@ export default function CreateNewTask() {
     fetchDepartment();
   }, []);
 
-  console.log("employees", employees);
-  function handleTitle(value: string) {
-    setTitle(value);
-    if (value.length > 1 && value.length < 255) {
-      setInputChecking(true);
-    } else {
-      setInputChecking(false);
-    }
-  }
-
-  function handlePrioritySelector(id: number, icon: string) {
-    setPriorityId(id);
-    setPriorityIcon(icon);
-  }
-
   return (
     <div className="flex flex-col gap-[25px]  px-[118px] py-10 bg-white w-full text-[#212529] ">
       <h1 className="text-[34px] w-full font-semibold ">
         შექმენი ახალი დავალება
       </h1>
-      <div className="flex gap-[161px] px-[55px]  py-[65px] bg-[#FBF9FFA6] border border-[#DDD2FF] rounded-sm">
+      <form
+        onClick={closeAllList}
+        onSubmit={(e) => {
+          e.preventDefault();
+          clientAction();
+        }}
+        className="relative flex gap-[161px] px-[55px]  py-[65px] bg-[#FBF9FFA6] border border-[#DDD2FF] rounded-sm"
+      >
         <div className="flex flex-col gap-[55px] w-[550px]">
           <div className="flex w-full flex-col gap-[3px] border-[#CED4DA]">
             <label htmlFor="name" className="text-[14px] text-[#343A40]">
               სათაური*
             </label>
             <input
+              id="name"
               type="text"
-              // value={title}
+              name="name"
+              value={task.name}
               required
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                handleTitle(e.target.value)
-              }
+              onChange={handleTaskChange}
               min={2}
               max={255}
-              className="p-[10px] rounded-[6px] text-[#0D0F10] outline-0 border-[1px]"
-              id="name"
+              className="p-[10px] rounded-[6px] text-[#0D0F10] border-[#DEE2E6] outline-0 border-[1px]"
             />
             <div className={`flex gap-2`}>
               <Image src="./check.svg" width={16} height={16} alt="Checker" />
@@ -123,16 +184,16 @@ export default function CreateNewTask() {
           </div>
 
           <div className="flex w-full flex-col gap-[3px] border-[#CED4DA]">
-            <label htmlFor="name" className="text-[14px] text-[#343A40]">
+            <label htmlFor="description" className="text-[14px] text-[#343A40]">
               აღწერა*
             </label>
             <textarea
-              // type="text"
+              id="description"
+              name="description"
               required
-              // min={2}
-              // max={255}
-              className=" p-[10px] text-[#0D0F10] w-[550px] h-[130px] rounded-[6px] outline-0 border-[1px]"
-              id="name"
+              value={task.description}
+              onChange={handleTaskChange}
+              className=" p-[10px] text-[#0D0F10] !w-[550px] !h-[130px] border-[#DEE2E6] rounded-[6px] outline-0 border-[1px] "
             />
             <div className={`flex gap-2`}>
               <Image src="./check.svg" width={16} height={16} alt="Checker" />
@@ -164,8 +225,9 @@ export default function CreateNewTask() {
               outline-0 border-[1px] cursor-pointer"
                 onClick={() => {
                   setpriorityDropdown((prev) => !prev);
-                  setDropdownElement(false);
+                  setDropDownElement(false);
                   setStatusDropdown(false);
+                  setEmployeeDropdown(false);
                 }}
               >
                 {priorityIcon && priorityId && (
@@ -204,6 +266,7 @@ export default function CreateNewTask() {
                           key={item.id}
                           className=" flex gap-2 cursor-pointer hover:bg-[#CED4DA] p-[15px] duration-75 transform transition-all ease-in-out"
                           onClick={() => {
+                            setTask({ ...task, priority_id: item.id });
                             setpriorityDropdown((prev) => !prev);
                             setPriority(item.name);
                             handlePrioritySelector(item.id, item.icon);
@@ -234,12 +297,13 @@ export default function CreateNewTask() {
             <div className="relative flex flex-col w-full gap-[8px] text-[#0D0F10]">
               <p className="text-[14px]">სტატუსი*</p>
               <div
-                className="relative flex h-[42px]  items-center  border-[#CED4DA] rounded-[6px] 
+                className="relative flex h-[42px]  items-center border-[#CED4DA] rounded-[6px] 
               outline-0 border-[1px] cursor-pointer"
                 onClick={() => {
                   setStatusDropdown((prev) => !prev);
                   setpriorityDropdown(false);
-                  setDropdownElement(false);
+                  setDropDownElement(false);
+                  setEmployeeDropdown(false);
                 }}
               >
                 <p className="text-[14px] p-[10px]">{status}</p>
@@ -264,6 +328,7 @@ export default function CreateNewTask() {
                           key={item.id}
                           className=" flex gap-2 cursor-pointer hover:bg-[#CED4DA] p-[15px] duration-75 transform transition-all ease-in-out"
                           onClick={() => {
+                            setTask({ ...task, status_id: item.id });
                             setStatusDropdown((prev) => !prev);
                             setStatus(item.name);
                           }}
@@ -287,9 +352,10 @@ export default function CreateNewTask() {
                   className="relative flex h-[42px] w-[384px]  items-center  border-[#CED4DA] rounded-[6px] 
               outline-0 border-[1px] cursor-pointer"
                   onClick={() => {
-                    setDropdownElement((prev) => !prev);
+                    setDropDownElement((prev) => !prev);
                     setStatusDropdown(false);
                     setpriorityDropdown(false);
+                    setEmployeeDropdown(false);
                   }}
                 >
                   <p className="text-[14px] p-[10px]">{department}</p>
@@ -302,7 +368,7 @@ export default function CreateNewTask() {
                   />
                 </div>
               </div>
-              {dropdownElement && (
+              {dropDownElement && (
                 <div className="absolute border-1 left-0  border-[#8338EC] bg-white w-[450px] h-56 z-20 rounded-[10px] overflow-hidden top-20">
                   <div className="relative flex flex-col h-full w-full  overflow-y-scroll">
                     {departments.map((item: Department) => {
@@ -310,14 +376,15 @@ export default function CreateNewTask() {
                         <div
                           key={item.id}
                           className=" flex gap-2 cursor-pointer hover:bg-[#CED4DA] p-[15px] duration-75 transform transition-all ease-in-out"
-                          onChange={() => {
-                            setDropdownElement(true);
+                          onClick={() => {
+                            setTask({ ...task, department_id: item.id });
+                            setDropDownElement(false);
                           }}
                         >
                           <p
                             className="w-full"
                             onClick={() => {
-                              setDropdownElement((prev) => !prev);
+                              setDropDownElement((prev) => !prev);
                               setDepartment(item.name);
                             }}
                           >
@@ -331,7 +398,7 @@ export default function CreateNewTask() {
               )}
             </div>
           </div>
-          <div className="relative flex items-center   text-[#212529] ">
+          <div className="relative flex items-center  z-10  text-[#212529] ">
             <div className="flex flex-col gap-[6px]">
               <p className="">პასუხისმგებელი თანამშრომელი*</p>
               <div
@@ -339,7 +406,7 @@ export default function CreateNewTask() {
               outline-0 border-[1px] cursor-pointer"
                 onClick={() => {
                   setEmployeeDropdown((prev) => !prev);
-                  setDropdownElement(false);
+                  setDropDownElement(false);
                   setStatusDropdown(false);
                   setpriorityDropdown(false);
                 }}
@@ -370,22 +437,32 @@ export default function CreateNewTask() {
             {employeeDropdown && (
               <div className="absolute border-1 left-0  border-[#8338EC] bg-white w-full h-[274px] rounded-[10px] overflow-hidden top-20">
                 <div className="relative flex flex-col h-full w-full overflow-y-scroll">
-                  <div className="flex gap-2 cursor-pointer p-[14px] item-center w-full text-[#8338EC]">
+                  <div
+                    onClick={() => {
+                      setShowCreateEmployee(true);
+                      handleCleanUp();
+                    }}
+                    className="flex gap-2 cursor-pointer p-[14px] item-center w-full text-[#8338EC]"
+                  >
                     <Image
                       src="add.svg"
                       alt="addButton"
                       width={16}
                       height={16}
                     />
-                    <p className="hover:underline">დაამატე თანამშრომელი</p>
+                    <div className="hover:underline">
+                      <p>დაამატე თანამშრომელი</p>
+                    </div>
                   </div>
                   {employees.map((employee) => {
                     return (
                       <div
                         key={employee.id}
                         className=" flex gap-2 cursor-pointer hover:bg-[#CED4DA] p-[14px] duration-75 transform transition-all ease-in-out"
-                        onChange={() => {
-                          setEmployeeDropdown(true);
+                        onClick={() => {
+                          setTask({ ...task, employee_id: employee.id });
+                          setEmployeeDropdown(false);
+                          setEmployee(`${employee.name} ${employee.surname}`);
                         }}
                       >
                         <div
@@ -413,7 +490,23 @@ export default function CreateNewTask() {
             )}
           </div>
         </div>
-      </div>
+        <button
+          type="submit"
+          onClick={(e) => {
+            e.preventDefault();
+            clientAction();
+            handleCleanUp();
+          }}
+          className="absolute bottom-[62px] right-[368px] bg-purple-600 text-white px-4 py-2 rounded cursor-pointer"
+        >
+          დავალების შექმნა
+        </button>
+      </form>
+      {showCreateEmployee && (
+        <div className="z-300">
+          <CreateEmployee setShowCreateEmployee={setShowCreateEmployee} />
+        </div>
+      )}
     </div>
   );
 }

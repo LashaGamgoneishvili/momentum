@@ -1,64 +1,53 @@
 import Image from "next/image";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
-import { Departments, Department } from "../../../typings";
-import { getAllDepartment } from "../../../actions";
+import { Departments, Department, CreateEmployeeType } from "../../../typings";
+import { createEmployee, getAllDepartment } from "../../../actions";
 
 export const CreateEmployee = ({
   setShowCreateEmployee,
 }: {
   setShowCreateEmployee: Dispatch<SetStateAction<boolean>>;
 }) => {
-  // const [name, setName] = useState("");
-  // const [lastName, setLastName] = useState("");
-  const [image, setImage] = useState("");
   const [dropdownElement, setDropdownElement] = useState(false);
   const [departments, setDepartments] = useState<Departments>([]);
   const [department, setDepartment] = useState("");
+  const [departmentId, setDepartmentId] = useState<number | null>(null);
   const [name, setName] = useState("");
-  // const [userName, setUserName] = useState("");
+  const [surName, setSurName] = useState("");
+  const [avatar, setAvatar] = useState("");
+  // const [blob, setBlob] = useState<CreateEmployeeType | null>(null);
+  // const inputFileRef = useRef<HTMLInputElement>(null);
+  let url;
+
+  if (avatar) {
+    const filename = avatar.split("\\");
+    url = filename[filename.length - 1];
+    console.log("url", url);
+  }
+
+  const clientAction = async (formData: FormData) => {
+    const addEmployee = {
+      name: formData.get("name"),
+      surname: formData.get("surName"),
+      avatar: formData.get("avatar"),
+      departmentId_id: departmentId,
+    };
+
+    console.log("addEmployee", addEmployee);
+
+    const response = await createEmployee(addEmployee as CreateEmployeeType);
+    console.log("response", response);
+  };
 
   useEffect(() => {
-    async function fetchDepartament() {
+    async function fetchDepartment() {
       const data: Departments = await getAllDepartment();
 
       setDepartments(data);
     }
 
-    fetchDepartament();
+    fetchDepartment();
   }, []);
-
-  let url;
-
-  if (image) {
-    const filename = image.split("\\");
-    url = filename[filename.length - 1];
-    console.log("url", url);
-  }
-
-  // const clinetAction = async (formData: FormData) => {
-  //   const addUser = {
-  //     name: formData.get("name"),
-  //     lastName: formData.get("lastName"),
-  //     email: formData.get("email"),
-  //     id: formData.get("id"),
-  //     image: formData.get("image"),
-  //   };
-
-  //   const response = await createUserActionAdmin(addUser);
-
-  //   if (response?.error) {
-  //     toast.error(response.error);
-  //     console.log("error", response?.error);
-  //   } else {
-  //     setModal(false);
-  //     setDisable(false);
-  //     toast.success("User successfully Added");
-  //   }
-  // };
-
-  // useEffect(() => {
-  //   setDisable(false);
-  // }, [name, lastName, email, id, image]);
 
   return (
     <>
@@ -75,8 +64,9 @@ export const CreateEmployee = ({
             <Image width={40} height={40} src="/x.svg" alt="close" />
           </button>
           <form
+            action={clientAction}
             className="flex flex-col gap-[45px] w-full"
-            onSubmit={(e) => e.preventDefault()}
+            // onSubmit={(e) => e.preventDefault()}
           >
             <div className="flex gap-[45px]  w-full">
               <div className="flex w-full flex-col gap-[3px] border-[#CED4DA]">
@@ -84,13 +74,15 @@ export const CreateEmployee = ({
                   სახელი*
                 </label>
                 <input
+                  id="name"
+                  name="name"
                   type="text"
                   required
+                  value={name}
                   min={2}
                   max={255}
                   onChange={(e) => setName(e.target.value)}
                   className="p-[10px] rounded-[6px] outline-0 border-[1px]"
-                  id="name"
                 />
                 <div className="flex gap-2">
                   <Image
@@ -129,16 +121,19 @@ export const CreateEmployee = ({
                 </div>
               </div>
               <div className="flex w-full flex-col gap-[3px] border-[#CED4DA]">
-                <label htmlFor="name" className="text-sm">
+                <label htmlFor="surName" className="text-[14px]">
                   გვარი*
                 </label>
                 <input
+                  id="surName"
+                  name="surName"
                   type="text"
                   required
+                  value={surName}
                   min={2}
                   max={255}
+                  onChange={(e) => setSurName(e.target.value)}
                   className="p-[10px] rounded-[6px] outline-0 border-[1px]"
-                  id="name"
                 />
                 <div className="flex gap-2">
                   <Image
@@ -167,20 +162,20 @@ export const CreateEmployee = ({
             <div className="relative flex flex-col  gap-[8px] border-[#CED4DA]">
               <p className="text-sm">ავატარი*</p>
               <input
-                id="image"
+                id="avatar"
+                name="avatar"
                 type="file"
                 title="avatar"
-                onChange={(e) => setImage(e.target.value)}
-                value={image}
+                onChange={(e) => setAvatar(e.target.value)}
+                value={avatar}
                 accept="image/png, image/jpeg"
                 required
                 className="rounded-sm border cursor-pointer border-[#CED4DA] w-full h-[120px] "
               />
 
-              <label htmlFor="image" className="text-[14x]">
-                ავატარი*
+              <label htmlFor="avatar" className="text-[14x]">
                 <Image
-                  src={`/${image === "" ? "user-icon.png" : url}`}
+                  src={`/${avatar === "" ? "user-icon.png" : url}`}
                   // src="/user-icon.png"
                   width={55}
                   height={55}
@@ -189,14 +184,14 @@ export const CreateEmployee = ({
                 />
               </label>
 
-              {image !== "" && (
+              {avatar !== "" && (
                 <Image
                   src="/bin.svg"
                   alt="bin"
                   width={24}
                   height={24}
                   className=" absolute   border   left-1/2 transform translate-x-1/2 top-1/2  translate-y-[12px] cursor-pointer"
-                  onClick={() => setImage("")}
+                  onClick={() => setAvatar("")}
                 />
               )}
             </div>
@@ -240,6 +235,7 @@ export const CreateEmployee = ({
                             onClick={() => {
                               setDropdownElement((prev) => !prev);
                               setDepartment(item.name);
+                              setDepartmentId(item.id);
                             }}
                           >
                             {item.name}
@@ -259,7 +255,15 @@ export const CreateEmployee = ({
               >
                 აუქმება
               </button>
-              <button className="bg-purple-600 text-white px-5 py-[10px] rounded cursor-pointer">
+              <button
+                type="submit"
+                onClick={() => {
+                  setTimeout(() => {
+                    setShowCreateEmployee((prev: boolean) => !prev);
+                  }, 200);
+                }}
+                className="bg-purple-600 text-white px-5 py-[10px] rounded cursor-pointer"
+              >
                 დაამატე თანამშრომელი
               </button>
             </div>

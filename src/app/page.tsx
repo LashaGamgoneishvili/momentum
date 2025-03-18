@@ -1,51 +1,18 @@
-// import Card from "@/Card";
 import DropdownMenu from "@/DropdownMenu";
 import {
   getAllPriorities,
   getAllDepartment,
   getAllEmployees,
   getAllStatuses,
-  // getAllTasks,
 } from "../../actions";
-import {
-  Priority,
-  Departments,
-  Status,
-  Employee,
-  // Task,
-  // FlatTask,
-} from "../../typings";
+import { Priority, Departments, Status, Employee } from "../../typings";
 import Tasks from "@/Tasks";
-// import { Fragment } from "react";
 
 export default async function TaskBoard() {
   const priorities: Priority[] = await getAllPriorities();
   const department: Departments = await getAllDepartment();
   const statuses: Status[] = await getAllStatuses();
   const employees: Employee[] = await getAllEmployees();
-  // const tasksData: Task[] = await getAllTasks();
-
-  // const tasks: FlatTask[] = tasksData.map((task) => {
-  //   return {
-  //     id: task.id,
-  //     status: task.status.name,
-  //     status_id: task.status.id,
-  //     priority: task.priority.name,
-  //     priority_id: task.priority.id,
-  //     priority_icon: task.priority.icon,
-  //     department: task.department.name,
-  //     department_id: task.department.id,
-  //     date: task.due_date,
-  //     title: task.name,
-  //     description: task.description,
-  //     employee_id: task.employee.id,
-  //     employee_name: task.employee.name,
-  //     employee_surname: task.employee.surname,
-  //     employee_avatar: task.employee.avatar,
-  //     total_comments: task.total_comments,
-  //     color: "string",
-  //   };
-  // });
 
   return (
     <div className="min-h-screen bg-gray-100 p-6 px-[120px] w-[1920px] ">

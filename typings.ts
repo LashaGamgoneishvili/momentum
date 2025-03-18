@@ -69,3 +69,17 @@ export type FilterType = {
   name: string;
   key: D_E_P;
 };
+
+type File = {
+  size: number;
+  type: string;
+  name: string;
+  lastModified: number;
+};
+
+export type CreateEmployeeType = {
+  name: string;
+  surname: string;
+  avatar: File;
+  departmentId_id: number;
+};

@@ -1,6 +1,7 @@
 "use server";
 
 import axios from "axios";
+import { CreateEmployeeType } from "./typings";
 
 const customFetch = axios.create({
   baseURL: "https://momentum.redberryinternship.ge/api",
@@ -79,5 +80,60 @@ export async function getAllEmployees() {
   } catch (error) {
     console.error("Error fetching users:", error);
     return [];
+  }
+}
+
+export async function createEmployee(addEmployee: CreateEmployeeType | null) {
+  if (!addEmployee) {
+    console.error("Invalid employee data provided.");
+    return null;
+  }
+  console.log("addEmployee", addEmployee.avatar);
+  const formData = new FormData();
+  formData.append("name", addEmployee.name);
+  formData.append("surname", addEmployee.surname);
+  formData.append(
+    "avatar",
+    addEmployee.avatar as unknown as Blob,
+    addEmployee.avatar.name
+  );
+  formData.append("department_id", addEmployee.departmentId_id.toString());
+
+  try {
+    console.log(formData);
+    const response = await customFetch.post("/employees", formData);
+
+    return response.data;
+  } catch (error) {
+    console.error("Error creating employee:", error);
+    return null;
+  }
+}
+
+export async function addNewTask(task: { [key: string]: string | number }) {
+  if (!task) {
+    console.error("Invalid employee data provided.");
+    return null;
+  }
+
+  const data = {
+    name: task.name,
+    description: task.description,
+    // due_date: task.due_date,
+    due_date: "2025-12-31",
+    status_id: task.status_id,
+    employee_id: task.employee_id,
+    priority_id: task.priority_id,
+  };
+
+  console.log("Sending employee data:", data);
+
+  try {
+    const response = await customFetch.post("/tasks", data);
+    console.log("CreateNewTasks", response.data);
+    return response.data;
+  } catch (error) {
+    console.error("Error creating employee:", error);
+    return null;
   }
 }
