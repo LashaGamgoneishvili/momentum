@@ -15,7 +15,7 @@ const Card = ({ task }: { task: FlatTask }) => {
     <>
       <Link
         href={`/details/${task.id}`}
-        className="flex flex-col border border-orange-300 rounded-lg p-4 max-w-md cursor-pointer"
+        className="flex flex-col border border-orange-300 rounded-lg p-5 max-w-[381px] cursor-pointer"
       >
         <div className="flex justify-between items-center mb-[28px]">
           <div className="flex gap-2">

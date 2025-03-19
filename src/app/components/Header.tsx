@@ -9,7 +9,7 @@ function Header() {
   const [showCreateEmployee, setShowCreateEmployee] = useState(false);
   return (
     <>
-      <header className="relative z-100 flex justify-between items-center h-[100px] bg-gray-100 px-[120px] w-[1920px] ">
+      <header className="relative z-100 flex justify-between items-center h-[100px] bg-gray-100 px-[120px] w-full ">
         <Link
           href="/"
           // onClick={() => (setTimeout(() => window.location.reload()), 2000)}
