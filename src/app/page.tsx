@@ -15,8 +15,8 @@ export default async function TaskBoard() {
   const employees: Employee[] = await getAllEmployees();
 
   return (
-    <div className="min-h-screen bg-gray-100  p-6 px-[120px] w-fll ">
-      <div className=" mx-auto">
+    <div className="min-h-screen py-6 w-full ">
+      <div className=" mx-auto w-full">
         <div className="w-full">
           <h2 className="text-[#212529] font-bold text-[34px] mb-12">
             დავალების ვერდი
@@ -28,7 +28,7 @@ export default async function TaskBoard() {
           dep={department}
           employees={employees}
         />
-        <div className="grid grid-cols-4 gap-[52px]">
+        <div className="flex flex-wrap justify-between w-full max-xl:justify-center max-xl:gap-[52px]">
           {statuses.map((status: Status) => (
             <div key={status.id} className="flex flex-col gap-6 w-[381px]">
               <h2

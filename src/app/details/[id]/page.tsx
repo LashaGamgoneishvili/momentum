@@ -9,7 +9,7 @@ async function DetailsPage({ params: { id } }: MainProps) {
   console.log("Task-Task", task);
 
   return (
-    <div className="min-h-screen bg-gray-100 p-6 px-[120px] w-full">
+    <div className="min-h-screen p-6 px-[120px] w-full">
       <div className="flex">
         <div className="flex flex-col gap-[63px] ">
           <div className="flex gap-3 mb-4">

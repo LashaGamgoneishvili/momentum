@@ -27,11 +27,13 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable}  max-w-[1920px] antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} w-full flex flex-col justify-center items-center antialiased`}
       >
         <FilterProvider>
           <Header />
+          <main className="max-w-[1920px] w-full  mx-auto px-[120px]" >
           {children}
+          </main>
         </FilterProvider>
       </body>
     </html>

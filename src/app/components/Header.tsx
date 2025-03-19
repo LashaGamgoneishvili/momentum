@@ -8,8 +8,7 @@ import { useState } from "react";
 function Header() {
   const [showCreateEmployee, setShowCreateEmployee] = useState(false);
   return (
-    <>
-      <header className="relative z-100 flex justify-between items-center h-[100px] bg-gray-100 px-[120px] w-full ">
+      <header className="relative z-100 flex justify-between items-center max-w-[1920px] mx-auto h-[100px] px-[120px] w-full">
         <Link
           href="/"
           // onClick={() => (setTimeout(() => window.location.reload()), 2000)}
@@ -19,7 +18,7 @@ function Header() {
           <Image src={Hourglass} alt="logo" className="object-contain" />
         </Link>
 
-        <div className="flex gap-10">
+        <div className="flex gap-[40px]">
           <button
             className="text-black border-1 border-[#8338EC]  px-4 py-2 rounded cursor-pointer"
             onClick={() => setShowCreateEmployee((prev: boolean) => !prev)}
@@ -39,7 +38,6 @@ function Header() {
           <CreateEmployee setShowCreateEmployee={setShowCreateEmployee} />
         )}
       </header>
-    </>
   );
 }
 

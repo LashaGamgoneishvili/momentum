@@ -133,7 +133,7 @@ export default function CreateNewTask() {
   }, []);
 
   return (
-    <div className="flex flex-col gap-[25px] w-full px-[118px] py-10 bg-white text-[#212529] ">
+    <div className="flex flex-col gap-[25px] w-full px-[118px] py-10 text-[#212529] ">
       <h1 className="text-[34px] w-full font-semibold ">
         შექმენი ახალი დავალება
       </h1>
