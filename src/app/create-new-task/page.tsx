@@ -48,14 +48,37 @@ export default function CreateNewTask() {
     employee_id: 1,
     priority_id: 1,
   });
+  const [taskColors, setTaskColors] = useState<{name:'red'|'green'|'gray';description:'red'|'green'|'gray'}>({
+    name: 'gray',
+    description: 'gray'
+  })
 
   const handleTaskChange = (
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
-    if (e.target.name === "description" && e.target.value.length > 255) {
+    const {name, value} = e.target;
+    if (name === "description" && value.length > 255) {
       return;
     }
-    setTask({ ...task, [e.target.name]: e.target.value });
+    if (value.length >= 2 && value.length <= 255  ) {
+      setTaskColors({...taskColors, description: 'green'})
+    } else if(value.length === 0) {
+      setTaskColors({...taskColors, description: 'gray'})
+    } else if (value.length < 2 || value.length > 255) {
+      setTaskColors({...taskColors, description: 'red'})
+    }
+    if (name === 'name') {
+      if (value.length >= 2 && value.length <= 255  ) {
+        setTaskColors({...taskColors, name: 'green'})
+      }
+      else if(value.length === 0){
+        setTaskColors({...taskColors, name: 'gray'})
+      }
+      else if (value.length < 2 || value.length > 255) {
+       setTaskColors({...taskColors, name: 'red'})
+     }
+    }
+    setTask({ ...task, [name]: value });
   };
 
   function handlePrioritySelector(id: number, icon: string) {
@@ -159,14 +182,12 @@ export default function CreateNewTask() {
               onChange={handleTaskChange}
               min={2}
               max={255}
-              className="p-[10px] rounded-[6px] text-[#0D0F10] border-[#DEE2E6] outline-0 border-[1px]"
+              className={"p-[10px] rounded-[6px] text-[#0D0F10] border-[#DEE2E6] outline-0 border-[1px]"}
             />
             <div className={`flex gap-2`}>
               <Image src="./check.svg" width={16} height={16} alt="Checker" />
               <p
-                className={`text-[10px]   text-[#6C757D] ${
-                  inputChecking && "text-[#08A508]"
-                }`}
+                className={`text-[10px] ${taskColors.name === 'green' ? `text-green-50`: taskColors.name === 'red' ? 'text-red-50': 'text-gray-50'}`}
               >
                 მინიმუმ 2 სიმბოლო
               </p>
@@ -174,9 +195,7 @@ export default function CreateNewTask() {
             <div className="flex gap-2">
               <Image src="./check.svg" width={16} height={16} alt="Checker" />
               <p
-                className={`text-[10px]   text-[#6C757D] ${
-                  inputChecking && "text-[#08A508]"
-                }`}
+                className={`text-[10px]   text-[#6C757D] ${taskColors.name === 'green' ? `text-green-50`: taskColors.name === 'red' ? 'text-red-50': 'text-gray-50'}`}
               >
                 მაქსიმუმ 255 სიმბოლო
               </p>
@@ -198,9 +217,7 @@ export default function CreateNewTask() {
             <div className={`flex gap-2`}>
               <Image src="./check.svg" width={16} height={16} alt="Checker" />
               <p
-                className={`text-[10px]   text-[#6C757D] ${
-                  inputChecking && "text-[#08A508]"
-                }`}
+                className={`text-[10px] ${taskColors.description === 'green' ? `text-green-50`: taskColors.description === 'red' ? 'text-red-50': 'text-gray-50'}`}
               >
                 მინიმუმ 2 სიმბოლო
               </p>
@@ -208,9 +225,7 @@ export default function CreateNewTask() {
             <div className="flex gap-2">
               <Image src="./check.svg" width={16} height={16} alt="Checker" />
               <p
-                className={`text-[10px]   text-[#6C757D] ${
-                  inputChecking && "text-[#08A508]"
-                }`}
+                className={`text-[10px] ${taskColors.description === 'green' ? `text-green-50`: taskColors.description === 'red' ? 'text-red-50': 'text-gray-50'}`}
               >
                 მაქსიმუმ 255 სიმბოლო
               </p>
