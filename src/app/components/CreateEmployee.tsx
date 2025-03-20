@@ -1,5 +1,11 @@
 import Image from "next/image";
-import { Dispatch, SetStateAction, useEffect, useState } from "react";
+import {
+  Dispatch,
+  SetStateAction,
+  useEffect,
+  useState,
+  ChangeEvent,
+} from "react";
 import { Departments, Department, CreateEmployeeType } from "../../../typings";
 import { createEmployee, getAllDepartment } from "../../../actions";
 
@@ -15,15 +21,46 @@ export const CreateEmployee = ({
   const [name, setName] = useState("");
   const [surName, setSurName] = useState("");
   const [avatar, setAvatar] = useState("");
+
+  const [task, setTask] = useState<{ [key: string]: string }>({
+    name: "",
+    lastName: "",
+  });
+
   // const [blob, setBlob] = useState<CreateEmployeeType | null>(null);
   // const inputFileRef = useRef<HTMLInputElement>(null);
-  let url;
 
-  if (avatar) {
-    const filename = avatar.split("\\");
-    url = filename[filename.length - 1];
-    console.log("url", url);
-  }
+  const [taskColors, setTaskColors] = useState<{
+    name: "red" | "green" | "gray";
+    surName: "red" | "green" | "gray";
+  }>({
+    name: "gray",
+    surName: "gray",
+  });
+
+  const handleTaskChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    if (name === "name" && value.length > 255) {
+      return;
+    }
+    if (value.length >= 2 && value.length <= 255) {
+      setTaskColors({ ...taskColors, name: "green" });
+    } else if (value.length === 0) {
+      setTaskColors({ ...taskColors, name: "gray" });
+    } else if (value.length < 2 || value.length > 255) {
+      setTaskColors({ ...taskColors, name: "red" });
+    }
+    if (name === "surName") {
+      if (value.length >= 2 && value.length <= 255) {
+        setTaskColors({ ...taskColors, surName: "green" });
+      } else if (value.length === 0) {
+        setTaskColors({ ...taskColors, surName: "gray" });
+      } else if (value.length < 2 || value.length > 255) {
+        setTaskColors({ ...taskColors, surName: "red" });
+      }
+    }
+    setTask({ ...task, [name]: value });
+  };
 
   const clientAction = async (formData: FormData) => {
     const addEmployee = {
@@ -61,7 +98,7 @@ export const CreateEmployee = ({
             onClick={() => setShowCreateEmployee((prev: boolean) => !prev)}
             title="close"
           >
-            <Image width={40} height={40} src="/x.svg" alt="close" />
+            <Image width={40} height={40} src="x.svg" alt="close" />
           </button>
           <form
             action={clientAction}
@@ -81,7 +118,10 @@ export const CreateEmployee = ({
                   value={name}
                   min={2}
                   max={255}
-                  onChange={(e) => setName(e.target.value)}
+                  onChange={(e) => {
+                    handleTaskChange(e);
+                    setName(e.target.value);
+                  }}
                   className="p-[10px] rounded-[6px] outline-0 border-[1px]"
                 />
                 <div className="flex gap-2">
@@ -93,9 +133,11 @@ export const CreateEmployee = ({
                   />
                   <p
                     className={`text-[10px] text-[#6C757D] ${
-                      name.length > 1 && name.length < 255
-                        ? "text-[#08A508]"
-                        : "text-[#FA4D4D]"
+                      taskColors.name === "green"
+                        ? `text-green-50`
+                        : taskColors.name === "red"
+                        ? "text-red-50"
+                        : "text-gray-50"
                     }`}
                   >
                     მინიმუმ 2 სიმბოლო
@@ -111,9 +153,11 @@ export const CreateEmployee = ({
                   />
                   <p
                     className={`text-[10px] text-[#6C757D] ${
-                      name.length > 1 && name.length < 255
-                        ? "text-[#08A508]"
-                        : "text-[#FA4D4D]"
+                      taskColors.name === "green"
+                        ? `text-green-50`
+                        : taskColors.name === "red"
+                        ? "text-red-50"
+                        : "text-gray-50"
                     }`}
                   >
                     მაქსიმუმ 255 სიმბოლო
@@ -132,7 +176,10 @@ export const CreateEmployee = ({
                   value={surName}
                   min={2}
                   max={255}
-                  onChange={(e) => setSurName(e.target.value)}
+                  onChange={(e) => {
+                    handleTaskChange(e);
+                    setSurName(e.target.value);
+                  }}
                   className="p-[10px] rounded-[6px] outline-0 border-[1px]"
                 />
                 <div className="flex gap-2">
@@ -141,8 +188,17 @@ export const CreateEmployee = ({
                     width={16}
                     height={16}
                     alt="Checker"
+                    className="text-[#08a508]"
                   />
-                  <p className="text-[10px] text-[#6C757D]">
+                  <p
+                    className={`text-[10px] text-[#6C757D] ${
+                      taskColors.surName === "green"
+                        ? `text-green-50`
+                        : taskColors.surName === "red"
+                        ? "text-red-50"
+                        : "text-gray-50"
+                    }`}
+                  >
                     მინიმუმ 2 სიმბოლო
                   </p>
                 </div>
@@ -153,7 +209,15 @@ export const CreateEmployee = ({
                     height={16}
                     alt="Checker"
                   />
-                  <p className="text-[10px] text-[#6C757D]">
+                  <p
+                    className={`text-[10px] text-[#6C757D] ${
+                      taskColors.surName === "green"
+                        ? `text-green-50`
+                        : taskColors.surName === "red"
+                        ? "text-red-50"
+                        : "text-gray-50"
+                    }`}
+                  >
                     მაქსიმუმ 255 სიმბოლო
                   </p>
                 </div>
@@ -173,16 +237,21 @@ export const CreateEmployee = ({
                 className="rounded-sm border cursor-pointer border-[#CED4DA] w-full h-[120px] "
               />
 
-              <label htmlFor="avatar" className="text-[14x]">
-                <Image
-                  src={`/${avatar === "" ? "user-icon.png" : url}`}
-                  // src="/user-icon.png"
-                  width={55}
-                  height={55}
-                  alt="upload"
-                  className=" absolute left-1/2 transform -translate-x-1/2 top-1/2  -translate-y-1/2 cursor-pointer"
-                />
-              </label>
+              {!avatar && (
+                <label
+                  htmlFor="avatar"
+                  className="text-[14x] flex flex-col absolute left-1/2 transform -translate-x-1/2 top-1/2  -translate-y-1/2 cursor-pointer items-center "
+                >
+                  <Image
+                    src="upload.svg"
+                    width={24}
+                    height={24}
+                    alt="upload"
+                    className=" "
+                  />
+                  ატვირთე ფოტო
+                </label>
+              )}
 
               {avatar !== "" && (
                 <Image
@@ -225,21 +294,14 @@ export const CreateEmployee = ({
                       return (
                         <div
                           key={item.id}
-                          className=" flex gap-2 cursor-pointer hover:bg-[#CED4DA] p-[15px] duration-75 transform transition-all ease-in-out"
-                          onChange={() => {
-                            setDropdownElement(true);
+                          className=" flex gap-2 cursor-pointer hover:bg-[#eeeeee] p-[15px] w-full h-full duration-75 transform transition-all ease-in-out"
+                          onClick={() => {
+                            setDropdownElement((prev) => !prev);
+                            setDepartment(item.name);
+                            setDepartmentId(item.id);
                           }}
                         >
-                          <p
-                            className="w-full"
-                            onClick={() => {
-                              setDropdownElement((prev) => !prev);
-                              setDepartment(item.name);
-                              setDepartmentId(item.id);
-                            }}
-                          >
-                            {item.name}
-                          </p>
+                          <p className="w-full">{item.name}</p>
                         </div>
                       );
                     })}
@@ -250,7 +312,7 @@ export const CreateEmployee = ({
 
             <div className="*:cursor-pointer absolute bottom-[60px] right-[50px]  flex gap-6">
               <button
-                className="text-black border-1 border-[#8338EC]  px-4 py-[10px] rounded cursor-pointer"
+                className="text-black border-1 border-[#8338EC]  active:border-[#B588F4] transition duration-200 px-4 py-[10px] rounded cursor-pointer"
                 onClick={() => setShowCreateEmployee((prev: boolean) => !prev)}
               >
                 აუქმება
@@ -262,7 +324,7 @@ export const CreateEmployee = ({
                     setShowCreateEmployee((prev: boolean) => !prev);
                   }, 200);
                 }}
-                className="bg-purple-600 text-white px-5 py-[10px] rounded cursor-pointer"
+                className="bg-[#8338EC] text-white active:bg-[#B588F4] transition duration-200 px-5 py-[10px] rounded cursor-pointer"
               >
                 დაამატე თანამშრომელი
               </button>

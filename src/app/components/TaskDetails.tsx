@@ -1,12 +1,14 @@
 import Image from "next/image";
-import pieChart from "../../../public/pie-chart.png";
-import calendar from "../../../public/calendar.png";
-import Frame from "../../../public/Frame 1000005864.png";
-import arrow from "../../../public/Shape.svg";
+import pieChart from "../../../public/pie-chart.svg";
+import calendar from "../../../public/calendar.svg";
+import Frame from "../../../public/employee-icon.svg";
 import { Task } from "../../../typings";
 import user from "../../../public/Ellipse 3892@2x.png";
+import { getAllStatuses } from "../../../actions";
+import StatusDropdown from "./StatusDropdown";
 
-function TaskDetails({ task }: { task: Task }) {
+async function TaskDetails({ task }: { task: Task }) {
+  const statuses = await getAllStatuses();
   const dateStr = task.due_date;
   const date = new Date(dateStr);
 
@@ -15,39 +17,28 @@ function TaskDetails({ task }: { task: Task }) {
 
   return (
     <>
-      <div className="flex flex-col text-[#2A2A2A] w-[493px]">
-        <h1 className=" mb-7 text-2xl">დავალების დეტალები</h1>
+      <div className="flex flex-col text-[#2A2A2A] w-[493px] gap-[18px]">
+        <h1 className=" text-2xl">დავალების დეტალები</h1>
         <div className="flex gap-[70px]">
-          <div className="flex flex-col gap-[46px]">
-            <div className="flex gap-2 items-center ">
-              <Image src={pieChart} width={15} height={15} alt="pieChart" />
+          <div className="flex flex-col gap-[44px]">
+            <div className="flex gap-2 items-center py-[23px]">
+              <Image src={pieChart} width={24} height={24} alt="pieChart" />
               <span className="">სტატუსი</span>
             </div>
-            <div className="flex gap-2 items-center ">
-              <Image src={Frame} width={15} height={15} alt="pieChart" />
+            <div className="flex gap-2 items-center">
+              <Image src={Frame} width={24} height={24} alt="employee" />
               <span className="">თანამშრომელი</span>
             </div>
             <div className="flex gap-2 items-center ">
-              <Image src={calendar} width={15} height={15} alt="pieChart" />
+              <Image src={calendar} width={24} height={24} alt="data" />
               <span className="">ვადა</span>
             </div>
           </div>
           <div className="flex flex-col gap-[46px]">
-            <form className="flex gap-2 items-center ">
-              <div className="flex gap-6 w-[200px] cursor-pointer  border-1 border-[#CED4DA] rounded-[5px]">
-                <span className="px-[18px] py-[10px]">{task.status.name}</span>
-                <Image
-                  src={arrow}
-                  width={14}
-                  height={8}
-                  alt="arrow"
-                  className="object-contain"
-                />
-              </div>
-            </form>
+            <StatusDropdown statuses={statuses} task={task} />
             <div className="flex gap-2 items-center ">
-              <Image src={user} width={32} height={32} alt="pieChart" />
-              <div className="flex gap-2 flex-col">
+              <Image src={user} width={32} height={32} alt="department" />
+              <div className="flex flex-col">
                 <span className="text-sm text-[#474747]">
                   {`${task.department.name
                     .split(" ")

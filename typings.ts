@@ -83,3 +83,22 @@ export type CreateEmployeeType = {
   avatar: File;
   departmentId_id: number;
 };
+
+export type SubComment = {
+  author_avatar: string;
+  author_nickname: string;
+  id: number;
+  parent_id: number;
+  task_id: number;
+  text: string;
+};
+
+export type CommentType = {
+  id: number;
+  text: string;
+  task_id: number;
+  parent_id: null | number;
+  author_avatar: string;
+  author_nickname: string;
+  sub_comments: SubComment[];
+};

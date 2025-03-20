@@ -16,6 +16,9 @@ import {
 } from "../../../typings";
 import { useState, useEffect, ChangeEvent } from "react";
 import { CreateEmployee } from "@/CreateEmployee";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 
 export default function CreateNewTask() {
   const [departments, setDepartments] = useState<Departments>([]);
@@ -38,45 +41,46 @@ export default function CreateNewTask() {
   const [priorityId, setPriorityId] = useState<number>();
   const [priorityIcon, setPriorityIcon] = useState("");
 
-  const [inputChecking] = useState(false);
   const [showCreateEmployee, setShowCreateEmployee] = useState(false);
 
-  const [task, setTask] = useState<{ [key: string]: string | number }>({
+  const [task, setTask] = useState<{ [key: string]: string | number | Date }>({
     name: "",
     description: "",
+    due_date: new Date(),
     task_id: 1,
     employee_id: 1,
     priority_id: 1,
   });
-  const [taskColors, setTaskColors] = useState<{name:'red'|'green'|'gray';description:'red'|'green'|'gray'}>({
-    name: 'gray',
-    description: 'gray'
-  })
+  const [taskColors, setTaskColors] = useState<{
+    name: "red" | "green" | "gray";
+    description: "red" | "green" | "gray";
+  }>({
+    name: "gray",
+    description: "gray",
+  });
 
   const handleTaskChange = (
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
-    const {name, value} = e.target;
+    const { name, value } = e.target;
     if (name === "description" && value.length > 255) {
       return;
     }
-    if (value.length >= 2 && value.length <= 255  ) {
-      setTaskColors({...taskColors, description: 'green'})
-    } else if(value.length === 0) {
-      setTaskColors({...taskColors, description: 'gray'})
+    if (value.length >= 2 && value.length <= 255) {
+      setTaskColors({ ...taskColors, description: "green" });
+    } else if (value.length === 0) {
+      setTaskColors({ ...taskColors, description: "gray" });
     } else if (value.length < 2 || value.length > 255) {
-      setTaskColors({...taskColors, description: 'red'})
+      setTaskColors({ ...taskColors, description: "red" });
     }
-    if (name === 'name') {
-      if (value.length >= 2 && value.length <= 255  ) {
-        setTaskColors({...taskColors, name: 'green'})
+    if (name === "name") {
+      if (value.length >= 2 && value.length <= 255) {
+        setTaskColors({ ...taskColors, name: "green" });
+      } else if (value.length === 0) {
+        setTaskColors({ ...taskColors, name: "gray" });
+      } else if (value.length < 2 || value.length > 255) {
+        setTaskColors({ ...taskColors, name: "red" });
       }
-      else if(value.length === 0){
-        setTaskColors({...taskColors, name: 'gray'})
-      }
-      else if (value.length < 2 || value.length > 255) {
-       setTaskColors({...taskColors, name: 'red'})
-     }
     }
     setTask({ ...task, [name]: value });
   };
@@ -95,6 +99,7 @@ export default function CreateNewTask() {
         employee_id: 0,
         priority_id: 0,
       });
+      setTaskColors({ name: "gray", description: "gray" });
       setpriorityDropdown(false);
       setDropDownElement(false);
       setStatusDropdown(false);
@@ -177,17 +182,25 @@ export default function CreateNewTask() {
               id="name"
               type="text"
               name="name"
-              value={task.name}
+              value={task.name as string}
               required
               onChange={handleTaskChange}
               min={2}
               max={255}
-              className={"p-[10px] rounded-[6px] text-[#0D0F10] border-[#DEE2E6] outline-0 border-[1px]"}
+              className={
+                "p-[10px] rounded-[6px] text-[#0D0F10] border-[#DEE2E6] outline-0 border-[1px]"
+              }
             />
             <div className={`flex gap-2`}>
               <Image src="./check.svg" width={16} height={16} alt="Checker" />
               <p
-                className={`text-[10px] ${taskColors.name === 'green' ? `text-green-50`: taskColors.name === 'red' ? 'text-red-50': 'text-gray-50'}`}
+                className={`text-[10px] ${
+                  taskColors.name === "green"
+                    ? `text-green-50`
+                    : taskColors.name === "red"
+                    ? "text-red-50"
+                    : "text-gray-50"
+                }`}
               >
                 მინიმუმ 2 სიმბოლო
               </p>
@@ -195,7 +208,13 @@ export default function CreateNewTask() {
             <div className="flex gap-2">
               <Image src="./check.svg" width={16} height={16} alt="Checker" />
               <p
-                className={`text-[10px]   text-[#6C757D] ${taskColors.name === 'green' ? `text-green-50`: taskColors.name === 'red' ? 'text-red-50': 'text-gray-50'}`}
+                className={`text-[10px]   text-[#6C757D] ${
+                  taskColors.name === "green"
+                    ? `text-green-50`
+                    : taskColors.name === "red"
+                    ? "text-red-50"
+                    : "text-gray-50"
+                }`}
               >
                 მაქსიმუმ 255 სიმბოლო
               </p>
@@ -210,14 +229,20 @@ export default function CreateNewTask() {
               id="description"
               name="description"
               required
-              value={task.description}
+              value={task.description as string}
               onChange={handleTaskChange}
               className=" p-[10px] text-[#0D0F10] !w-[550px] !h-[130px] border-[#DEE2E6] rounded-[6px] outline-0 border-[1px] "
             />
             <div className={`flex gap-2`}>
               <Image src="./check.svg" width={16} height={16} alt="Checker" />
               <p
-                className={`text-[10px] ${taskColors.description === 'green' ? `text-green-50`: taskColors.description === 'red' ? 'text-red-50': 'text-gray-50'}`}
+                className={`text-[10px] ${
+                  taskColors.description === "green"
+                    ? `text-green-50`
+                    : taskColors.description === "red"
+                    ? "text-red-50"
+                    : "text-gray-50"
+                }`}
               >
                 მინიმუმ 2 სიმბოლო
               </p>
@@ -225,7 +250,13 @@ export default function CreateNewTask() {
             <div className="flex gap-2">
               <Image src="./check.svg" width={16} height={16} alt="Checker" />
               <p
-                className={`text-[10px] ${taskColors.description === 'green' ? `text-green-50`: taskColors.description === 'red' ? 'text-red-50': 'text-gray-50'}`}
+                className={`text-[10px] ${
+                  taskColors.description === "green"
+                    ? `text-green-50`
+                    : taskColors.description === "red"
+                    ? "text-red-50"
+                    : "text-gray-50"
+                }`}
               >
                 მაქსიმუმ 255 სიმბოლო
               </p>
@@ -279,7 +310,7 @@ export default function CreateNewTask() {
                       return (
                         <div
                           key={item.id}
-                          className=" flex gap-2 cursor-pointer hover:bg-[#CED4DA] p-[15px] duration-75 transform transition-all ease-in-out"
+                          className=" flex gap-2 cursor-pointer hover:bg-[#eee] p-[15px] duration-75 transform transition-all ease-in-out"
                           onClick={() => {
                             setTask({ ...task, priority_id: item.id });
                             setpriorityDropdown((prev) => !prev);
@@ -341,7 +372,7 @@ export default function CreateNewTask() {
                       return (
                         <div
                           key={item.id}
-                          className=" flex gap-2 cursor-pointer hover:bg-[#CED4DA] p-[15px] duration-75 transform transition-all ease-in-out"
+                          className=" flex gap-2 cursor-pointer hover:bg-[#eee] p-[15px] duration-75 transform transition-all ease-in-out"
                           onClick={() => {
                             setTask({ ...task, status_id: item.id });
                             setStatusDropdown((prev) => !prev);
@@ -390,7 +421,7 @@ export default function CreateNewTask() {
                       return (
                         <div
                           key={item.id}
-                          className=" flex gap-2 cursor-pointer hover:bg-[#CED4DA] p-[15px] duration-75 transform transition-all ease-in-out"
+                          className=" flex gap-2 cursor-pointer hover:bg-[#eee] p-[15px] duration-75 transform transition-all ease-in-out"
                           onClick={() => {
                             setTask({ ...task, department_id: item.id });
                             setDropDownElement(false);
@@ -473,7 +504,7 @@ export default function CreateNewTask() {
                     return (
                       <div
                         key={employee.id}
-                        className=" flex gap-2 cursor-pointer hover:bg-[#CED4DA] p-[14px] duration-75 transform transition-all ease-in-out"
+                        className=" flex gap-2 cursor-pointer hover:bg-[#eee] p-[14px] duration-75 transform transition-all ease-in-out"
                         onClick={() => {
                           setTask({ ...task, employee_id: employee.id });
                           setEmployeeDropdown(false);
@@ -504,6 +535,17 @@ export default function CreateNewTask() {
               </div>
             )}
           </div>
+          <div className="flex flex-col gap-[6px] w-[318px]">
+            <label>დედლაინი</label>
+            <LocalizationProvider dateAdapter={AdapterDateFns}>
+              <DatePicker
+                value={task.due_date instanceof Date ? task.due_date : null}
+                onChange={(newDate) =>
+                  setTask({ ...task, due_date: newDate as Date })
+                }
+              />
+            </LocalizationProvider>
+          </div>
         </div>
         <button
           type="submit"
@@ -512,7 +554,7 @@ export default function CreateNewTask() {
             clientAction();
             handleCleanUp();
           }}
-          className="absolute bottom-[62px] right-[368px] bg-purple-600 text-white px-4 py-2 rounded cursor-pointer"
+          className="absolute bottom-[62px] active:bg-[#B588F4] transition duration-200 right-[368px] bg-[#8338EC] text-white px-4 py-2 rounded cursor-pointer"
         >
           დავალების შექმნა
         </button>

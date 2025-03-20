@@ -81,8 +81,13 @@ const Card = ({ task }: { task: FlatTask }) => {
           <div className="flex items-center gap-1 text-[#212529]">
             <Image src={commentIcon} alt="comment" width={22} height={22} />
             <p>{task.employee_name}</p>
-            <p>{task.employee_id}</p>
-            <span className="text-sm">{/* {task.total_comments} */}8</span>
+            <span className="text-sm">
+              {/* {task.total_comments} */}
+              {task.employee_id}
+            </span>
+            <div>
+              <span>card ID</span> {task.id}
+            </div>
           </div>
         </div>
       </Link>
