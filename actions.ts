@@ -84,6 +84,9 @@ export async function getAllEmployees() {
 }
 
 export async function createEmployee(addEmployee: CreateEmployeeType | null) {
+  // console.log("addEmployee", addEmployee);
+  // return;
+
   if (!addEmployee) {
     console.error("Invalid employee data provided.");
     return null;

@@ -19,37 +19,38 @@ const Card = ({ task }: { task: FlatTask }) => {
     <>
       <Link
         href={`/details/${task.id}`}
-        className="flex flex-col border border-orange-300 rounded-lg p-5 max-w-[381px] cursor-pointer"
+        className="flex flex-col justify-between border border-orange-300 rounded-lg p-5 max-w-[381px] cursor-pointer h-[230px]"
       >
-        <div className="flex justify-between items-center mb-[28px]">
-          <div className="flex gap-2">
-            <div
-              className={`flex w-[86px] gap-1 p-1 border-[1px] px-[5px] rounded-[5px] ${
-                task.priority_id === 3 && "border-heigh"
-              } ${task.priority_id === 2 && "border-medium"} ${
-                task.priority_id === 1 && "border-low"
-              }`}
-            >
-              <Image
-                src={task.priority_icon}
-                alt="icon"
-                width={15}
-                height={15}
-              />
-              <span
-                className={`text-[12px] font-semibold ${
-                  task.priority_id === 3 && "text-heigh"
-                }
+        <div>
+          <div className="flex justify-between items-center mb-[28px]">
+            <div className="flex gap-2">
+              <div
+                className={`flex w-[86px] gap-1 p-1 border-[1px] px-[5px] rounded-[5px] ${
+                  task.priority_id === 3 && "border-heigh"
+                } ${task.priority_id === 2 && "border-medium"} ${
+                  task.priority_id === 1 && "border-low"
+                }`}
+              >
+                <Image
+                  src={task.priority_icon}
+                  alt="icon"
+                  width={15}
+                  height={15}
+                />
+                <span
+                  className={`text-[12px] font-semibold ${
+                    task.priority_id === 3 && "text-heigh"
+                  }
                 ${task.priority_id === 2 && "text-medium"}
                 ${task.priority_id === 1 && "text-low"}`}
-              >
-                {task.priority}
-              </span>
-            </div>
-            <span
-              className={`bg-[#FF66A8] ${
-                task.department_id === 1 && "bg-[#FF66A8]"
-              }${task.department_id === 2 && "bg-[#FD9A6A]"}
+                >
+                  {task.priority}
+                </span>
+              </div>
+              <span
+                className={`bg-[#FF66A8] ${
+                  task.department_id === 1 && "bg-[#FF66A8]"
+                }${task.department_id === 2 && "bg-[#FD9A6A]"}
               ${task.department_id === 3 && "bg-[#89B6FF]"}
               
               ${task.department_id === 4 && "bg-[#FFD86D]"}
@@ -57,31 +58,32 @@ const Card = ({ task }: { task: FlatTask }) => {
               ${task.department_id === 6 && "bg-[#08A508]"}
               ${task.department_id === 7 && "bg-[#FFBE0B]"}
                text-white  w-[88px] h-6 text-center  px-[10px] py-1 text-[12px] rounded-[15px] font-semibold`}
-            >
-              {task.department.split(" ").length > 2
-                ? `${
-                    task.department.split("").length < 9
-                      ? task.department
-                      : task.department
-                          .split(" ")
-                          .map((word) => word.slice(0, 2))
-                          .join(". ")
-                  }.`
-                : `${
-                    task.department.split("").length < 9
-                      ? task.department
-                      : task.department
-                          .split(" ")
-                          .map((word) => word.slice(0, 3))
-                          .join(". ")
-                  }.`}
-            </span>
+              >
+                {task.department.split(" ").length > 2
+                  ? `${
+                      task.department.split("").length < 9
+                        ? task.department
+                        : task.department
+                            .split(" ")
+                            .map((word) => word.slice(0, 2))
+                            .join(". ")
+                    }.`
+                  : `${
+                      task.department.split("").length < 9
+                        ? task.department
+                        : task.department
+                            .split(" ")
+                            .map((word) => word.slice(0, 3))
+                            .join(". ")
+                    }.`}
+              </span>
+            </div>
+            <span className="text-gray-500 text-sm">{formattedDate}</span>
           </div>
-          <span className="text-gray-500 text-sm">{formattedDate}</span>
-        </div>
 
-        <h3 className="font-bold text-md text-black">{task.title}</h3>
-        <p className="text-gray-700 text-sm mt-4">{shortDescription}</p>
+          <h3 className="font-bold text-md text-black">{task.title}</h3>
+          <p className="text-gray-700 text-sm mt-4">{shortDescription}</p>
+        </div>
 
         <div className="flex justify-between items-end mt-[28px]">
           <div className="flex justify-start items-end w-full h-full">

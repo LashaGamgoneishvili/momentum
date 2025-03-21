@@ -39,11 +39,11 @@ function Employee({
               className="flex gap-2 cursor-pointer"
             >
               <Image
-                src={"/Ellipse 3892@2x.png"}
+                src={item.avatar}
                 width={28}
                 height={28}
                 alt="user "
-                className="object-contain"
+                className="object-cover rounded-full"
               />
               {item.name} {item.surname}
             </label>

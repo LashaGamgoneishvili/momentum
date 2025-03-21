@@ -16,9 +16,7 @@ import {
 } from "../../../typings";
 import { useState, useEffect, ChangeEvent } from "react";
 import { CreateEmployee } from "@/CreateEmployee";
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { DatePicker } from "@mui/x-date-pickers/DatePicker";
-import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
+import CalendarInput from "@/CalendarInput";
 
 export default function CreateNewTask() {
   const [departments, setDepartments] = useState<Departments>([]);
@@ -30,6 +28,12 @@ export default function CreateNewTask() {
   const [priorityDropdown, setpriorityDropdown] = useState(false);
   const [statusDropdown, setStatusDropdown] = useState(false);
   const [employeeDropdown, setEmployeeDropdown] = useState(false);
+
+  // const [inputState, setInputState] = useState({
+  //   title: '',
+  //   description: '',
+
+  // })
 
   const [department, setDepartment] = useState("");
   const [priority, setPriority] = useState("");
@@ -544,17 +548,7 @@ export default function CreateNewTask() {
               </div>
             )}
           </div>
-          <div className="flex flex-col gap-[6px] w-[318px]">
-            <label>დედლაინი</label>
-            <LocalizationProvider dateAdapter={AdapterDateFns}>
-              <DatePicker
-                value={task.due_date instanceof Date ? task.due_date : null}
-                onChange={(newDate) =>
-                  setTask({ ...task, due_date: newDate as Date })
-                }
-              />
-            </LocalizationProvider>
-          </div>
+          <CalendarInput task={task} setTask={setTask} />
         </div>
         <button
           type="submit"

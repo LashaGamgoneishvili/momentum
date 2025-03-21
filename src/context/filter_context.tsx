@@ -2,21 +2,29 @@
 
 import {
   createContext,
-  useEffect,
+  // useEffect,
   useContext,
   useReducer,
   ReactNode,
-  useState,
+  Dispatch,
+  // useState,
 } from "react";
 import reducer from "../reducers/filter_reducer";
 import {
-  LOAD_PRODUCTS,
+  // LOAD_PRODUCTS,
   UPDATE_FILTERS,
   CLEAR_FILTERS,
   FILTER_PRODUCTS,
+  // GET_TASKS,
 } from "../../constant";
-import { D_E_P, FilterType, FlatTask, Task } from "../../typings";
-import { getAllTasks } from "../../actions";
+import {
+  Action,
+  D_E_P,
+  FilterType,
+  FlatTask,
+  // , Task
+} from "../../typings";
+// import { getAllTasks } from "../../actions";
 
 interface FilterContextType {
   filtered_tasks: FlatTask[];
@@ -26,6 +34,7 @@ interface FilterContextType {
     priority: FilterType[];
     employee: FilterType[];
   };
+  dispatch: Dispatch<Action>;
   updateFilters: (name: D_E_P, value: FilterType) => void;
   clearFilters: () => void;
   filterTasks: () => void;
@@ -47,38 +56,6 @@ const FilterContext = createContext<FilterContextType | undefined>(undefined);
 
 export const FilterProvider = ({ children }: { children: ReactNode }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
-  const [tasks, setTasks] = useState<FlatTask[]>([]);
-
-  useEffect(() => {
-    getAllTasks().then((data: Task[]) => {
-      const flatTasks: FlatTask[] = data.map((task: Task) => {
-        return {
-          id: task.id,
-          status: task.status.name,
-          status_id: task.status.id,
-          priority: task.priority.name,
-          priority_id: task.priority.id,
-          priority_icon: task.priority.icon,
-          department: task.department.name,
-          department_id: task.department.id,
-          date: task.due_date,
-          title: task.name,
-          description: task.description,
-          employee_id: task.employee.id,
-          employee_name: task.employee.name,
-          employee_surname: task.employee.surname,
-          employee_avatar: task.employee.avatar,
-          total_comments: task.total_comments,
-          color: "string",
-        };
-      });
-      setTasks(flatTasks);
-    });
-  }, []);
-
-  useEffect(() => {
-    dispatch({ type: LOAD_PRODUCTS, payload: tasks });
-  }, [tasks]);
 
   const filterTasks = () => {
     dispatch({ type: FILTER_PRODUCTS });
@@ -94,6 +71,7 @@ export const FilterProvider = ({ children }: { children: ReactNode }) => {
     <FilterContext.Provider
       value={{
         ...state,
+        dispatch,
         filterTasks,
         updateFilters,
         clearFilters,

@@ -4,7 +4,7 @@ import {
   FILTER_PRODUCTS,
   CLEAR_FILTERS,
 } from "../../constant";
-import { D_E_P, FilterType, FlatTask } from "../../typings";
+import { Action, FilterType, FlatTask } from "../../typings";
 
 type Filters = {
   department: FilterType[];
@@ -17,15 +17,6 @@ type State = {
   tasks: FlatTask[];
   filters: Filters;
 };
-
-type Action =
-  | { type: typeof LOAD_PRODUCTS; payload: FlatTask[] }
-  | {
-      type: typeof UPDATE_FILTERS;
-      payload: { name: D_E_P; value: FilterType };
-    }
-  | { type: typeof FILTER_PRODUCTS }
-  | { type: typeof CLEAR_FILTERS };
 
 const filter_reducer = (state: State, action: Action): State => {
   switch (action.type) {

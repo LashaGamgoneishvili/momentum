@@ -1,3 +1,10 @@
+import {
+  CLEAR_FILTERS,
+  FILTER_PRODUCTS,
+  LOAD_PRODUCTS,
+  UPDATE_FILTERS,
+} from "./constant";
+
 export type Priority = {
   id: number;
   name: string;
@@ -102,3 +109,12 @@ export type CommentType = {
   author_nickname: string;
   sub_comments: SubComment[];
 };
+
+export type Action =
+  | { type: typeof LOAD_PRODUCTS; payload: FlatTask[] }
+  | {
+      type: typeof UPDATE_FILTERS;
+      payload: { name: D_E_P; value: FilterType };
+    }
+  | { type: typeof FILTER_PRODUCTS }
+  | { type: typeof CLEAR_FILTERS };
