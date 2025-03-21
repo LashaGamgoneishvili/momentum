@@ -7,7 +7,7 @@ const Card = ({ task }: { task: FlatTask }) => {
   const dateStr = task.date;
   const date = new Date(dateStr);
 
-  const formattedDate = `${date.getDate()} ${date.toLocaleString("ka-Ge", {
+  const formattedDate = `${date.getDate()} ${date.toLocaleDateString("ka-GE", {
     month: "short",
   })}, ${date.getFullYear()}`;
 
