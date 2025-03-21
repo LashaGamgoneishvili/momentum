@@ -242,17 +242,19 @@ export const CreateEmployee = ({
             </div>
             <div className="relative flex flex-col  gap-[8px] border-[#CED4DA]">
               <p className="text-sm">ავატარი*</p>
-              <input
-                id="avatar"
-                type="file"
-                ref={imageRef}
-                name="avatar"
-                title="avatar"
-                onChange={(e) => handleImageChange(e)}
-                accept="image/png, image/jpeg, image/jpg"
-                required
-                className="rounded-sm border cursor-pointer border-[#CED4DA] w-full h-[120px] "
-              />
+              <div className="rounded-lg border cursor-pointer border-[#CED4DA] w-full h-[120px] ">
+                <input
+                  id="avatar"
+                  type="file"
+                  ref={imageRef}
+                  name="avatar"
+                  title="avatar"
+                  onChange={(e) => handleImageChange(e)}
+                  accept="image/png, image/jpeg, image/jpg"
+                  required
+                  className="rounded-sm border hidden cursor-pointer border-[#CED4DA] w-full h-[120px] "
+                />
+              </div>
 
               {!avatar && (
                 <label
@@ -271,20 +273,20 @@ export const CreateEmployee = ({
               )}
 
               {avatar !== "" && (
-                <div className="flex flex-col">
+                <div className="absolute  flex flex-col border top-1/3 left-1/2 transform -translate-x-1/2  rounded-full  cursor-pointer">
                   <Image
                     src={avatar}
-                    width={24}
-                    height={24}
+                    width={88}
+                    height={88}
                     alt="upload"
-                    className=" "
+                    className="rounded-full "
                   />
                   <Image
                     src="/bin.svg"
                     alt="bin"
                     width={24}
                     height={24}
-                    className=" absolute   border   left-1/2 transform translate-x-1/2 top-1/2  translate-y-[12px] cursor-pointer"
+                    className=" absolute   border   left-2/3 transform translate-x-1/2 top-1/2  translate-y-[24px] cursor-pointer"
                     onClick={() => setAvatar("")}
                   />
                 </div>
