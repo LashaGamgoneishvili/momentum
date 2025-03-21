@@ -1,7 +1,7 @@
 import {
-  LOAD_PRODUCTS,
+  LOAD_TASKS,
   UPDATE_FILTERS,
-  FILTER_PRODUCTS,
+  FILTER_TASKS,
   CLEAR_FILTERS,
 } from "../../constant";
 import { Action, FilterType, FlatTask } from "../../typings";
@@ -20,7 +20,7 @@ type State = {
 
 const filter_reducer = (state: State, action: Action): State => {
   switch (action.type) {
-    case LOAD_PRODUCTS: {
+    case LOAD_TASKS: {
       return {
         ...state,
         tasks: [...action.payload],
@@ -49,7 +49,7 @@ const filter_reducer = (state: State, action: Action): State => {
         };
       }
     }
-    case FILTER_PRODUCTS: {
+    case FILTER_TASKS: {
       const { tasks } = state;
       const { department, priority, employee } = state.filters;
 

@@ -90,10 +90,7 @@ export const CreateEmployee = ({
       departmentId_id: departmentId,
     };
 
-    console.log("addEmployee", addEmployee);
-
-    const response = await createEmployee(addEmployee as CreateEmployeeType);
-    console.log("response", response);
+    await createEmployee(addEmployee as CreateEmployeeType);
   };
 
   useEffect(() => {

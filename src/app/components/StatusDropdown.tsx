@@ -16,8 +16,6 @@ export default function StatusDropdown({
   const [dropDown, setDropDown] = useState(false);
   const [status, setStatus] = useState<string>(task.status.name);
   const [statusId, setStatusID] = useState<number>(task.status.id);
-  console.log("status", status);
-  console.log("status", task);
 
   useEffect(() => {
     changeStatus(task.id, statusId);

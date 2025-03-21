@@ -1,15 +1,12 @@
-import { MainProps } from "../../../../typings";
 import Image from "next/image";
 import TaskDetails from "../../components/TaskDetails";
 import Comment from "@/comment";
 import { getTask, getTaskComments } from "../../../../actions";
 
-async function DetailsPage({ params: { id } }: MainProps) {
+async function DetailsPage({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params;
   const task = await getTask(id);
   const taskComment = await getTaskComments(id);
-  console.log("Task-Task", task);
-  console.log("taskComment", taskComment);
-  console.log("taskCommentId", id);
 
   return (
     <div className="min-h-screen pt-10  w-full">

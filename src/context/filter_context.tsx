@@ -2,29 +2,14 @@
 
 import {
   createContext,
-  // useEffect,
   useContext,
   useReducer,
   ReactNode,
   Dispatch,
-  // useState,
 } from "react";
 import reducer from "../reducers/filter_reducer";
-import {
-  // LOAD_PRODUCTS,
-  UPDATE_FILTERS,
-  CLEAR_FILTERS,
-  FILTER_PRODUCTS,
-  // GET_TASKS,
-} from "../../constant";
-import {
-  Action,
-  D_E_P,
-  FilterType,
-  FlatTask,
-  // , Task
-} from "../../typings";
-// import { getAllTasks } from "../../actions";
+import { UPDATE_FILTERS, CLEAR_FILTERS, FILTER_TASKS } from "../../constant";
+import { Action, D_E_P, FilterType, FlatTask } from "../../typings";
 
 interface FilterContextType {
   filtered_tasks: FlatTask[];
@@ -58,7 +43,7 @@ export const FilterProvider = ({ children }: { children: ReactNode }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
 
   const filterTasks = () => {
-    dispatch({ type: FILTER_PRODUCTS });
+    dispatch({ type: FILTER_TASKS });
   };
 
   const updateFilters = (name: D_E_P, value: FilterType) => {

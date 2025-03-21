@@ -19,8 +19,7 @@ export default function Comment({
 
   async function handleComment() {
     const data = await postCommentAction(id, comment);
-    console.log("response", data);
-    console.log("response", data);
+
     setComment("");
     setComments((prev) => [...prev, data]);
     window.location.reload();

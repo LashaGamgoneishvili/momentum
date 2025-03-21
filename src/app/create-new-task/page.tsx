@@ -133,9 +133,7 @@ export default function CreateNewTask() {
   }
 
   const clientAction = async () => {
-    const response = await addNewTask(task);
-
-    console.log("response", response);
+    await addNewTask(task);
   };
 
   useEffect(() => {

@@ -3,7 +3,7 @@ import { useFilterContext } from "../../context/filter_context";
 import { Fragment, useEffect, useMemo, useState } from "react";
 import Card from "./Card";
 import { FlatTask, Status, Task } from "../../../typings";
-import { LOAD_PRODUCTS } from "../../../constant";
+import { LOAD_TASKS } from "../../../constant";
 import { getAllTasks } from "../../../actions";
 
 function Tasks({ status }: { status: Status }) {
@@ -41,7 +41,7 @@ function Tasks({ status }: { status: Status }) {
   }, []);
 
   useEffect(() => {
-    dispatch({ type: LOAD_PRODUCTS, payload: tasks });
+    dispatch({ type: LOAD_TASKS, payload: tasks });
   }, [tasks, dispatch]);
 
   return (

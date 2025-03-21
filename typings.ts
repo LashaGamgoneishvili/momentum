@@ -1,7 +1,7 @@
 import {
   CLEAR_FILTERS,
-  FILTER_PRODUCTS,
-  LOAD_PRODUCTS,
+  FILTER_TASKS,
+  LOAD_TASKS,
   UPDATE_FILTERS,
 } from "./constant";
 
@@ -63,12 +63,6 @@ export type FlatTask = {
   color: string;
 };
 
-export type MainProps = {
-  params: {
-    id: string;
-  };
-};
-
 export type D_E_P = "department" | "priority" | "employee";
 
 export type FilterType = {
@@ -111,10 +105,10 @@ export type CommentType = {
 };
 
 export type Action =
-  | { type: typeof LOAD_PRODUCTS; payload: FlatTask[] }
+  | { type: typeof LOAD_TASKS; payload: FlatTask[] }
   | {
       type: typeof UPDATE_FILTERS;
       payload: { name: D_E_P; value: FilterType };
     }
-  | { type: typeof FILTER_PRODUCTS }
+  | { type: typeof FILTER_TASKS }
   | { type: typeof CLEAR_FILTERS };

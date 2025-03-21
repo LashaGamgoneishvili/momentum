@@ -75,7 +75,6 @@ export async function getTask(id: string) {
 export async function getAllEmployees() {
   try {
     const response = await customFetch.get(`employees`);
-    console.log("EmployeesData", response.data);
     return response.data;
   } catch (error) {
     console.error("Error fetching getAllEmployees:", error);
@@ -84,14 +83,10 @@ export async function getAllEmployees() {
 }
 
 export async function createEmployee(addEmployee: CreateEmployeeType | null) {
-  // console.log("addEmployee", addEmployee);
-  // return;
-
   if (!addEmployee) {
     console.error("Invalid employee data provided.");
     return null;
   }
-  console.log("addEmployee", addEmployee.avatar);
   const formData = new FormData();
   formData.append("name", addEmployee.name);
   formData.append("surname", addEmployee.surname);
@@ -103,7 +98,6 @@ export async function createEmployee(addEmployee: CreateEmployeeType | null) {
   formData.append("department_id", addEmployee.departmentId_id.toString());
 
   try {
-    console.log(formData);
     const response = await customFetch.post("/employees", formData);
 
     return response.data;
@@ -116,7 +110,6 @@ export async function createEmployee(addEmployee: CreateEmployeeType | null) {
 export async function addNewTask(task: {
   [key: string]: string | number | Date;
 }) {
-  console.log("addNewTaskAction", addNewTask);
   if (!task) {
     console.error("Invalid employee data provided.");
     return null;
@@ -130,8 +123,6 @@ export async function addNewTask(task: {
     employee_id: task.employee_id,
     priority_id: task.priority_id,
   };
-
-  console.log("Sending employee data:", data);
 
   try {
     const response = await customFetch.post("/tasks", data);
