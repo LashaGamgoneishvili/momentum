@@ -16,18 +16,21 @@ export default function Comment({
 }) {
   const [comment, setComment] = useState("");
   const [comments, setComments] = useState<CommentType[]>(taskComment);
+  const [answer, setAnswer] = useState(false);
+  const [subComment, setSubComment] = useState("");
+  const [subId, setSubId] = useState<number>(0);
 
   async function handleComment() {
     const data = await postCommentAction(id, comment);
-
     setComment("");
     setComments((prev) => [...prev, data]);
-    window.location.reload();
+    // window.location.reload();
   }
 
   function handleSubComment(parentId: number | null, comment: string) {
     postSubComment(id, parentId, comment);
     setComment("");
+    window.location.reload();
   }
 
   return (
@@ -68,7 +71,6 @@ export default function Comment({
                   <div className="flex items-start space-x-4">
                     <Image
                       src={user}
-                      // src={item.author_avatar}
                       alt="avatar"
                       width={38}
                       height={38}
@@ -81,7 +83,14 @@ export default function Comment({
                   </div>
 
                   <button
-                    onClick={() => handleSubComment(item.id, comment)}
+                    onClick={() => {
+                      console.log("subId", subId);
+                      console.log("item.id", item.id);
+                      if (item.sub_comments.length === 0) {
+                        setAnswer((prev) => !prev);
+                        setSubId(item.id);
+                      }
+                    }}
                     className="flex items-center gap-1 ml-12 mt-2 cursor-pointer hover:underline text-[#8338EC]"
                   >
                     <Image
@@ -93,11 +102,33 @@ export default function Comment({
                     <p className="active:text-[#B588F4]">უპასუხე</p>
                   </button>
 
+                  {answer && !item.sub_comments[0]?.id && item.id === subId && (
+                    <div className="relative flex items-start  px-5  mx-[45px] my-4 bg-white rounded-lg shadow-md">
+                      <textarea
+                        minLength={5}
+                        maxLength={255}
+                        placeholder="კომენტარი"
+                        value={subComment}
+                        onChange={(e) => setSubComment(e.target.value)}
+                        className="flex-1 p-2 text-gray-500  border-none !h-[135px] outline-none bg-transparent"
+                      />
+
+                      <button
+                        onClick={() => {
+                          handleSubComment(item.id, subComment);
+                          setAnswer(false);
+                        }}
+                        className="absolute right-5 bottom-[15px] px-4 py-2 active:bg-[#B588F4] text-white bg-[#8338EC] cursor-pointer rounded-full"
+                      >
+                        დააკომენტარე
+                      </button>
+                    </div>
+                  )}
+
                   {item?.sub_comments?.length > 0 && (
                     <div className="flex items-start space-x-4 ml-12 mt-3">
                       <Image
                         src={user2}
-                        // src={item.sub_comments[0].author_avatar}
                         alt="avatar"
                         width={38}
                         height={38}
