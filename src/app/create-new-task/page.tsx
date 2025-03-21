@@ -29,12 +29,6 @@ export default function CreateNewTask() {
   const [statusDropdown, setStatusDropdown] = useState(false);
   const [employeeDropdown, setEmployeeDropdown] = useState(false);
 
-  // const [inputState, setInputState] = useState({
-  //   title: '',
-  //   description: '',
-
-  // })
-
   const [department, setDepartment] = useState("");
   const [priority, setPriority] = useState("");
   const [status, setStatus] = useState("");
@@ -168,8 +162,6 @@ export default function CreateNewTask() {
       )
     );
   }, [department, employees, task.department_id]);
-
-  console.log("department", departments);
 
   return (
     <div className="flex flex-col gap-[25px] w-full px-[118px] py-10 text-[#212529] ">

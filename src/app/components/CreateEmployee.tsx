@@ -31,8 +31,6 @@ export const CreateEmployee = ({
     lastName: "",
   });
 
-  // const inputFileRef = useRef<HTMLInputElement>(null);
-
   const [taskColors, setTaskColors] = useState<{
     name: "red" | "green" | "gray";
     surName: "red" | "green" | "gray";
@@ -120,7 +118,6 @@ export const CreateEmployee = ({
           <form
             action={clientAction}
             className="flex flex-col gap-[45px] w-full"
-            // onSubmit={(e) => e.preventDefault()}
           >
             <div className="flex gap-[45px]  w-full">
               <div className="flex w-full flex-col gap-[3px] border-[#CED4DA]">

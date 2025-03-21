@@ -24,7 +24,6 @@ export default function Comment({
     const data = await postCommentAction(id, comment);
     setComment("");
     setComments((prev) => [...prev, data]);
-    // window.location.reload();
   }
 
   function handleSubComment(parentId: number | null, comment: string) {
@@ -84,8 +83,6 @@ export default function Comment({
 
                   <button
                     onClick={() => {
-                      console.log("subId", subId);
-                      console.log("item.id", item.id);
                       if (item.sub_comments.length === 0) {
                         setAnswer((prev) => !prev);
                         setSubId(item.id);

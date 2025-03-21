@@ -36,7 +36,6 @@ const initialState = {
   },
 };
 
-// Create context with `undefined` as initial value
 const FilterContext = createContext<FilterContextType | undefined>(undefined);
 
 export const FilterProvider = ({ children }: { children: ReactNode }) => {
