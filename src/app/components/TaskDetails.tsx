@@ -3,7 +3,6 @@ import pieChart from "../../../public/pie-chart.svg";
 import calendar from "../../../public/calendar.svg";
 import Frame from "../../../public/employee-icon.svg";
 import { Task } from "../../../typings";
-import user from "../../../public/Ellipse 3892@2x.png";
 import { getAllStatuses } from "../../../actions";
 import StatusDropdown from "./StatusDropdown";
 
@@ -37,7 +36,13 @@ async function TaskDetails({ task }: { task: Task }) {
           <div className="flex flex-col gap-[46px]">
             <StatusDropdown statuses={statuses} task={task} />
             <div className="flex gap-2 items-center ">
-              <Image src={user} width={32} height={32} alt="department" />
+              <Image
+                src={task.employee.avatar}
+                width={32}
+                height={32}
+                alt="employee"
+                className="rounded-full"
+              />
               <div className="flex flex-col">
                 <span className="text-sm text-[#474747]">
                   {`${task.department.name
@@ -45,7 +50,9 @@ async function TaskDetails({ task }: { task: Task }) {
                     .map((word: string) => word.slice(0, 3))
                     .join(". ")}.`}
                 </span>
-                <span className="text-[14px]">{task.employee.name}</span>
+                <span className="text-[14px]">
+                  {task.employee.name} {task.employee.surname}
+                </span>
               </div>
             </div>
             <div className="flex gap-2 items-center ">

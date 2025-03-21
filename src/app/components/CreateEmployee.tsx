@@ -5,6 +5,7 @@ import {
   useEffect,
   useState,
   ChangeEvent,
+  useRef,
 } from "react";
 import { Departments, Department, CreateEmployeeType } from "../../../typings";
 import { createEmployee, getAllDepartment } from "../../../actions";
@@ -21,13 +22,15 @@ export const CreateEmployee = ({
   const [name, setName] = useState("");
   const [surName, setSurName] = useState("");
   const [avatar, setAvatar] = useState("");
+  const [uploadAvatar, setUploadAvatar] = useState<File | null>(null);
+
+  const imageRef = useRef<HTMLInputElement>(null);
 
   const [task, setTask] = useState<{ [key: string]: string }>({
     name: "",
     lastName: "",
   });
 
-  // const [blob, setBlob] = useState<CreateEmployeeType | null>(null);
   // const inputFileRef = useRef<HTMLInputElement>(null);
 
   const [taskColors, setTaskColors] = useState<{
@@ -37,6 +40,23 @@ export const CreateEmployee = ({
     name: "gray",
     surName: "gray",
   });
+
+  const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    if (files !== null) {
+      const file = files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function (e) {
+          if (e.target) {
+            setAvatar(e.target.result as string);
+          }
+        };
+        reader.readAsDataURL(file);
+      }
+      setUploadAvatar(files[0]);
+    }
+  };
 
   const handleTaskChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -66,7 +86,7 @@ export const CreateEmployee = ({
     const addEmployee = {
       name: formData.get("name"),
       surname: formData.get("surName"),
-      avatar: formData.get("avatar"),
+      avatar: uploadAvatar,
       departmentId_id: departmentId,
     };
 
@@ -98,7 +118,7 @@ export const CreateEmployee = ({
             onClick={() => setShowCreateEmployee((prev: boolean) => !prev)}
             title="close"
           >
-            <Image width={40} height={40} src="x.svg" alt="close" />
+            <Image width={40} height={40} src="/x.svg" alt="close" />
           </button>
           <form
             action={clientAction}
@@ -126,7 +146,7 @@ export const CreateEmployee = ({
                 />
                 <div className="flex gap-2">
                   <Image
-                    src="./check.svg"
+                    src="/check.svg"
                     width={16}
                     height={16}
                     alt="Checker"
@@ -145,7 +165,7 @@ export const CreateEmployee = ({
                 </div>
                 <div className="flex gap-2">
                   <Image
-                    src="./check.svg"
+                    src="/check.svg"
                     width={16}
                     height={16}
                     alt="Checker"
@@ -184,7 +204,7 @@ export const CreateEmployee = ({
                 />
                 <div className="flex gap-2">
                   <Image
-                    src="./check.svg"
+                    src="/check.svg"
                     width={16}
                     height={16}
                     alt="Checker"
@@ -204,7 +224,7 @@ export const CreateEmployee = ({
                 </div>
                 <div className="flex gap-2">
                   <Image
-                    src="./check.svg"
+                    src="/check.svg"
                     width={16}
                     height={16}
                     alt="Checker"
@@ -227,12 +247,12 @@ export const CreateEmployee = ({
               <p className="text-sm">ავატარი*</p>
               <input
                 id="avatar"
-                name="avatar"
                 type="file"
+                ref={imageRef}
+                name="avatar"
                 title="avatar"
-                onChange={(e) => setAvatar(e.target.value)}
-                value={avatar}
-                accept="image/png, image/jpeg"
+                onChange={(e) => handleImageChange(e)}
+                accept="image/png, image/jpeg, image/jpg"
                 required
                 className="rounded-sm border cursor-pointer border-[#CED4DA] w-full h-[120px] "
               />
@@ -243,7 +263,7 @@ export const CreateEmployee = ({
                   className="text-[14x] flex flex-col absolute left-1/2 transform -translate-x-1/2 top-1/2  -translate-y-1/2 cursor-pointer items-center "
                 >
                   <Image
-                    src="upload.svg"
+                    src="/upload.svg"
                     width={24}
                     height={24}
                     alt="upload"
@@ -254,14 +274,23 @@ export const CreateEmployee = ({
               )}
 
               {avatar !== "" && (
-                <Image
-                  src="/bin.svg"
-                  alt="bin"
-                  width={24}
-                  height={24}
-                  className=" absolute   border   left-1/2 transform translate-x-1/2 top-1/2  translate-y-[12px] cursor-pointer"
-                  onClick={() => setAvatar("")}
-                />
+                <div className="flex flex-col">
+                  <Image
+                    src={avatar}
+                    width={24}
+                    height={24}
+                    alt="upload"
+                    className=" "
+                  />
+                  <Image
+                    src="/bin.svg"
+                    alt="bin"
+                    width={24}
+                    height={24}
+                    className=" absolute   border   left-1/2 transform translate-x-1/2 top-1/2  translate-y-[12px] cursor-pointer"
+                    onClick={() => setAvatar("")}
+                  />
+                </div>
               )}
             </div>
 
@@ -279,7 +308,7 @@ export const CreateEmployee = ({
                 >
                   <p className="text-[14px] p-[10px]">{department}</p>
                   <Image
-                    src="arrow-down.svg"
+                    src="/arrow-down.svg"
                     width={14}
                     height={8}
                     alt="arrow"

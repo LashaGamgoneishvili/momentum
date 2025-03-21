@@ -11,6 +11,10 @@ const Card = ({ task }: { task: FlatTask }) => {
     month: "short",
   })}, ${date.getFullYear()}`;
 
+  const text = task.description;
+
+  const shortDescription = text.split(" ").slice(0, 9).join(" ");
+
   return (
     <>
       <Link
@@ -42,7 +46,18 @@ const Card = ({ task }: { task: FlatTask }) => {
                 {task.priority}
               </span>
             </div>
-            <span className="bg-[#FF66A8] text-white w-24 text-center  px-[10px] py-1 text-[12px] rounded-[15px] font-semibold">
+            <span
+              className={`bg-[#FF66A8] ${
+                task.department_id === 1 && "bg-[#FF66A8]"
+              }${task.department_id === 2 && "bg-[#FD9A6A]"}
+              ${task.department_id === 3 && "bg-[#89B6FF]"}
+              
+              ${task.department_id === 4 && "bg-[#FFD86D]"}
+              ${task.department_id === 5 && "bg-[#FA4D4D]"}
+              ${task.department_id === 6 && "bg-[#08A508]"}
+              ${task.department_id === 7 && "bg-[#FFBE0B]"}
+               text-white  w-[88px] h-6 text-center  px-[10px] py-1 text-[12px] rounded-[15px] font-semibold`}
+            >
               {task.department.split(" ").length > 2
                 ? `${
                     task.department.split("").length < 9
@@ -66,28 +81,22 @@ const Card = ({ task }: { task: FlatTask }) => {
         </div>
 
         <h3 className="font-bold text-md text-black">{task.title}</h3>
-        <p className="text-gray-700 text-sm mt-1">{task.description}</p>
+        <p className="text-gray-700 text-sm mt-4">{shortDescription}</p>
 
         <div className="flex justify-between items-end mt-[28px]">
-          <div className="flex items-end ">
+          <div className="flex justify-start items-end w-full h-full">
             <Image
-              src={"/Ellipse 3892@2x.png"}
+              src={task.employee_avatar}
               alt="Profile"
-              width={25}
-              height={25}
+              width={31}
+              height={31}
+              className="rounded-full"
             />
           </div>
 
-          <div className="flex items-center gap-1 text-[#212529]">
+          <div className="flex items-center gap-2 text-[#212529]">
             <Image src={commentIcon} alt="comment" width={22} height={22} />
-            <p>{task.employee_name}</p>
-            <span className="text-sm">
-              {/* {task.total_comments} */}
-              {task.employee_id}
-            </span>
-            <div>
-              <span>card ID</span> {task.id}
-            </div>
+            <span className="text-[14px]">{task.total_comments}</span>
           </div>
         </div>
       </Link>

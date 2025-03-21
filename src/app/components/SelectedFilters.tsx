@@ -1,5 +1,6 @@
 import React from "react";
 import { FilterType } from "../../../typings";
+import Image from "next/image";
 
 const SelectedFilters = ({
   allFilters,
@@ -11,7 +12,7 @@ const SelectedFilters = ({
   handleAllFilterRemove: () => void;
 }) => {
   return (
-    <div className="absolute top-1/2 transform -translate-y-1/2 flex gap-[12px] items-center overflow-x-auto overflow-y-hidden w-full">
+    <div className="absolute z-1 top-1/2 transform -translate-y-1/2 flex gap-[12px] items-center overflow-x-auto overflow-y-hidden w-full">
       {allFilters.map((filter, index) => {
         return (
           <div
@@ -19,12 +20,14 @@ const SelectedFilters = ({
             className="flex gap-2 rounded-[43px] px-[10px] py-[6px] text-[#343A40] flex-shrink-0  border-[1px] border-[#CED4DA]"
           >
             <p className="text-[14px]">{filter.name} </p>
-            <span
-              className="text-[14px] cursor-pointer"
+            <Image
               onClick={() => handleFilterRemove(filter)}
-            >
-              x
-            </span>
+              className="cursor-pointer"
+              src="x (1).svg"
+              alt="icon"
+              width={14}
+              height={14}
+            />
           </div>
         );
       })}

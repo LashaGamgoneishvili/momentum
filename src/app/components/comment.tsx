@@ -4,6 +4,8 @@ import { CommentType } from "../../../typings";
 import Image from "next/image";
 import left from "../../../public/Left 2.svg";
 import { postCommentAction, postSubComment } from "../../../actions";
+import user from "../../../public/commentAvatar.svg";
+import user2 from "../../../public/subComment.svg";
 
 export default function Comment({
   taskComment,
@@ -13,11 +15,15 @@ export default function Comment({
   id: string;
 }) {
   const [comment, setComment] = useState("");
+  const [comments, setComments] = useState<CommentType[]>(taskComment);
 
   async function handleComment() {
     const data = await postCommentAction(id, comment);
-    console.log(data);
+    console.log("response", data);
+    console.log("response", data);
     setComment("");
+    setComments((prev) => [...prev, data]);
+    window.location.reload();
   }
 
   function handleSubComment(parentId: number | null, comment: string) {
@@ -34,14 +40,14 @@ export default function Comment({
           placeholder="დაანახე კომენტარი"
           value={comment}
           onChange={(e) => setComment(e.target.value)}
-          className="flex-1 p-2 text-gray-500 border-none h-[135px] outline-none bg-transparent"
+          className="flex-1 p-2 text-gray-500  border-none !h-[135px] outline-none bg-transparent"
         />
 
         <button
           onClick={handleComment}
           className="absolute right-5 bottom-[15px] px-4 py-2 active:bg-[#B588F4] text-white bg-[#8338EC] cursor-pointer rounded-full"
         >
-          დაკომენტარე
+          დააკომენტარე
         </button>
       </div>
       <div className="flex flex-col px-[45px]  overflow-hidden ">
@@ -57,12 +63,13 @@ export default function Comment({
           </div>
 
           <div className="mt-4">
-            {taskComment.length > 0 &&
-              taskComment.map((item) => (
+            {comments.length > 0 &&
+              comments.map((item) => (
                 <div key={item.id} className="flex flex-col mb-6">
                   <div className="flex items-start space-x-4">
                     <Image
-                      src={item.author_avatar}
+                      src={user}
+                      // src={item.author_avatar}
                       alt="avatar"
                       width={38}
                       height={38}
@@ -87,10 +94,11 @@ export default function Comment({
                     <p className="active:text-[#B588F4]">უპასუხე</p>
                   </button>
 
-                  {item.sub_comments.length > 0 && (
+                  {item?.sub_comments?.length > 0 && (
                     <div className="flex items-start space-x-4 ml-12 mt-3">
                       <Image
-                        src={item.sub_comments[0].author_avatar}
+                        src={user2}
+                        // src={item.sub_comments[0].author_avatar}
                         alt="avatar"
                         width={38}
                         height={38}

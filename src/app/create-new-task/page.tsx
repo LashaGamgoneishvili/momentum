@@ -40,6 +40,8 @@ export default function CreateNewTask() {
 
   const [priorityId, setPriorityId] = useState<number>();
   const [priorityIcon, setPriorityIcon] = useState("");
+  const [employeeAccordingDepartment, setEmployeeAccordingDepartment] =
+    useState<Employee[]>([]);
 
   const [showCreateEmployee, setShowCreateEmployee] = useState(false);
 
@@ -130,9 +132,6 @@ export default function CreateNewTask() {
     const response = await addNewTask(task);
 
     console.log("response", response);
-    // if (response) {
-    //   window.location.reload();
-    // }
   };
 
   useEffect(() => {
@@ -159,6 +158,16 @@ export default function CreateNewTask() {
 
     fetchDepartment();
   }, []);
+
+  useEffect(() => {
+    setEmployeeAccordingDepartment(
+      employees.filter(
+        (employee) => employee.department.id === task.department_id
+      )
+    );
+  }, [department, employees, task.department_id]);
+
+  console.log("department", departments);
 
   return (
     <div className="flex flex-col gap-[25px] w-full px-[118px] py-10 text-[#212529] ">
@@ -500,7 +509,7 @@ export default function CreateNewTask() {
                       <p>დაამატე თანამშრომელი</p>
                     </div>
                   </div>
-                  {employees.map((employee) => {
+                  {employeeAccordingDepartment.map((employee) => {
                     return (
                       <div
                         key={employee.id}
@@ -508,7 +517,7 @@ export default function CreateNewTask() {
                         onClick={() => {
                           setTask({ ...task, employee_id: employee.id });
                           setEmployeeDropdown(false);
-                          setEmployee(`${employee.name} ${employee.surname}`);
+                          setEmployee(`${employee.name} ${employee.surname} `);
                         }}
                       >
                         <div

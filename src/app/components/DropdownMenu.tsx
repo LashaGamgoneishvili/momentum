@@ -60,6 +60,8 @@ export default function DropdownMenu({
   }, [filters]);
 
   function handleClick(section: D_E_P) {
+    setShowSelectedFilters(false);
+
     if (section === dropdownElement) {
       setDropdownElement("none");
       return;
@@ -81,13 +83,18 @@ export default function DropdownMenu({
 
   function handleAllFilterRemove() {
     clearFilters();
-    setShownFilters([...allFilters]);
+    setShownFilters([]);
   }
 
   function handleFilterClick() {
     filterTasks();
     setShownFilters([...allFilters]);
     setShowSelectedFilters(true);
+    setDropdownElement("none");
+  }
+  function handleCloseDropdown() {
+    setShownFilters([]);
+    setShowSelectedFilters(false);
     setDropdownElement("none");
   }
 
@@ -140,7 +147,7 @@ export default function DropdownMenu({
           )}
         </DropdownHeader>
       </form>
-      <div className="h-[78px] relative z-1 w-full ">
+      <div className="h-[78px] relative  w-full ">
         {showSelectedFilters && allFilters.length !== 0 && (
           <SelectedFilters
             allFilters={shownFilters}
@@ -149,6 +156,13 @@ export default function DropdownMenu({
           />
         )}
       </div>
+
+      {dropdownElement !== "none" && (
+        <div
+          className="fixed w-full h-full bg-transparent top-0 z-0 left-0"
+          onClick={() => handleCloseDropdown()}
+        ></div>
+      )}
     </>
   );
 }

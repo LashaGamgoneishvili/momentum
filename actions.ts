@@ -75,7 +75,7 @@ export async function getTask(id: string) {
 export async function getAllEmployees() {
   try {
     const response = await customFetch.get(`employees`);
-
+    console.log("EmployeesData", response.data);
     return response.data;
   } catch (error) {
     console.error("Error fetching getAllEmployees:", error);
@@ -113,6 +113,7 @@ export async function createEmployee(addEmployee: CreateEmployeeType | null) {
 export async function addNewTask(task: {
   [key: string]: string | number | Date;
 }) {
+  console.log("addNewTaskAction", addNewTask);
   if (!task) {
     console.error("Invalid employee data provided.");
     return null;

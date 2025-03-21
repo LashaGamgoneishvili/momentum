@@ -11,8 +11,7 @@ function Header() {
     <header className="relative z-100 flex justify-between items-center max-w-[1920px] mx-auto h-[100px] px-[120px] w-full">
       <Link
         href="/"
-        // onClick={() => (setTimeout(() => window.location.reload()), 2000)}
-        className="header-logo flex gap-1 items-center font-[31px] "
+        className="header-logo flex gap-1 items-center font-[31px] cursor-pointer "
       >
         <h2 className="text-3xl text-[#8338EC] font-extrabold">Momentum </h2>
         <Image src={Hourglass} alt="logo" className="object-contain" />
